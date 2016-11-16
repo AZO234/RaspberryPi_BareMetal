@@ -1,8 +1,8 @@
 
 ARMGNU ?= arm-none-eabi
 
-COPS = -Wall -O0 -g3 -nostdlib
-#COPS = -Wall -O4 -nostdlib
+#COPS = -Wall -O0 -g3 -nostdlib
+COPS = -Wall -O4 -nostdlib
 ASMOPS = -g3
 
 AZO_CPU_SINGLE = 1
