@@ -23,7 +23,7 @@ How to
 For Raspberry Pi Zero/1/2(/3/3_64) Bare Metal code by AZO.  
 
 How to make:  
-1. install "arm-none-eabi-gcc" or "binutils-aarch64-linux-gnu"(RP3_64).  
+1. install "arm-none-eabi-gcc" or "gcc-aarch64-linux-gnu"(RP3_64).  
 2. Open "Makefile " with texteditor, and change options.  
 BOARD=RPZERO/RP1/RPIOLD/RP2(/RP3/RP3_64)  
 3. make  
