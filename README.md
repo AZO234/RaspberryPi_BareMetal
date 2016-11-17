@@ -13,10 +13,10 @@ BOARD=RPZERO/RP1/RP2/RP3
 
 How to run:  
 Put follow files to FAT SD card.  
-"bootcode.bin"  
-"start.elf"  
-"config.txt" &lt;- config_01.txt or config_23.txt  
-"kernel.img"(RPZero/1) or "kernel7.img"(RP2/3)  
+* "bootcode.bin"  
+* "start.elf"  
+* "config.txt" &lt;- config_01.txt or config_23.txt  
+* "kernel.img"(RPZero/1) or "kernel7.img"(RP2/3)  
 
 Firmware:  
 Grub "bootcode.bin" and "start.elf" at  

@@ -1,5 +1,5 @@
-JTAG enabler
-============
+JTAG enable
+===========
 
 This program makes Raspberry Pi's ARM JTAG enable to degub.  
 You need any external JTAG interface probe.  
@@ -10,7 +10,7 @@ Connect JTAG interface to below pins.
 - pin16 - RTCK(GPIO23/ALT4)
 - pin18 - TDO(GPIO24/ALT4)
 - pin22 - TCK(GPIO25/ALT4)
-- pin37 - TDI(GPIO26/ALT4), old RP1 pin7 - TDI(GPIO04/ALT5)
+- pin37 - TDI(GPIO26/ALT4), or old RP1 pin7 - TDI(GPIO04/ALT5)
 - pin13 - TMS(GPIO27/ALT4)
 - pin20 - GND(Ground)
 
@@ -31,10 +31,10 @@ BOARD=RPZERO/RP1/RPIOLD/RP2(/RP3/RP3_64)
 
 How to run:  
 Put follow files to FAT SD card.  
-"bootcode.bin"  
-"start.elf"  
-"config.txt" &lt;- config_rp01.txt or config_rp23.txt or config_rp3_64.txt  
-"kernel.img"(RPZero/1) or "kernel7.img"(RP2/3) or "kernel8.img"(RP3_64)  
+* "bootcode.bin"  
+* "start.elf"  
+* "config.txt" &lt;- config_rp01.txt or config_rp23.txt or config_rp3_64.txt  
+* "kernel.img"(RPZero/1) or "kernel7.img"(RP2/3) or "kernel8.img"(RP3_64)  
 
 Firmware:  
 Grub "bootcode.bin" and "start.elf" at  
