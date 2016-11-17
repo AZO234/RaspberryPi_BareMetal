@@ -23,11 +23,11 @@ How to
 For Raspberry Pi Zero/1/2(/3/3_64) Bare Metal code by AZO.  
 
 How to make:  
-1. install "arm-none-eabi-gcc".
-1. Open "Makefile " with texteditor, and change options.  
-  BOARD=RPZERO/RP1/RPIOLD/RP2(/RP3/RP3_64)
-1. make
-1. If successfully, output "kernel.img"(RPZero/1/1old) or "kernel7.img"(RP2/3). 
+1. install "arm-none-eabi-gcc".  
+2. Open "Makefile " with texteditor, and change options.  
+BOARD=RPZERO/RP1/RPIOLD/RP2(/RP3/RP3_64)  
+3. make  
+4. If successfully, output "kernel.img"(RPZero/1/1old) or "kernel7.img"(RP2/3).  
 
 How to run:  
 Put follow files to FAT SD card.  
@@ -47,16 +47,16 @@ OpenOCD
 You will use OpenOCD ARM, and it will be for ARMv7.  
 Now, OpenOCD doesn't have function for ARMv8.  
 
-You can make OpenOCD, include current implemantion for ARMv8.
+You can make OpenOCD, include current implemantion for ARMv8.  
 ```shell
-$ git clone https://git.linaro.org/people/peter.griffin/openocd-code.git  
-$ cd openocd-code  
-$ git checkout armv8  
-$ git submodule update --init --recursive  
-$ autoreconf -iv  
-$ ./configure --enable-maintainer-mode --enable-ftdi --enable-legacy-ft2232_libftdi --enable-openjtag_ftdi --enable-bcm2835gpio  
-$ make -j4  
-$ sudo make install
+git clone https://git.linaro.org/people/peter.griffin/openocd-code.git  
+cd openocd-code  
+git checkout armv8  
+git submodule update --init --recursive  
+autoreconf -iv  
+./configure --enable-maintainer-mode --enable-ftdi --enable-legacy-ft2232_libftdi --enable-openjtag_ftdi --enable-bcm2835gpio  
+make -j4  
+sudo make install
 ```
 
 -----
