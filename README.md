@@ -29,8 +29,12 @@ https://github.com/dwelch67/raspberrypi
 - PeterLemon/RaspberryPi: Raspberry Pi Bare Metal Assembly Programming  
 https://github.com/PeterLemon/RaspberryPi  
 
+-----
+
 - CONFIG.TXT  
 https://www.raspberrypi.org/documentation/configuration/config-txt.md  
+
+-----
 
 - Peripheral specification  
 https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf  
@@ -59,6 +63,8 @@ https://github.com/raspberrypi/firmware
 - Official Broadcom VideoCore IV 3D Architecture Reference  
 http://www.broadcom.com/docs/support/videocore/VideoCoreIV-AG100-R.pdf  
 
+-----
+
 - BCM2836 ARM-local peripherals  
 https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2836/QA7_rev3.4.pdf  
 - Cortex™-A7 MPCore™ Technical Reference Manual  
@@ -67,6 +73,8 @@ http://infocenter.arm.com/help/topic/com.arm.doc.ddi0464f/DDI0464F_cortex_a7_mpc
 http://infocenter.arm.com/help/topic/com.arm.doc.ddi0463f/DDI0463F_cortex_a7_fpu_r0p5_trm.pdf  
 - Cortex™-A7 NEON™ Media Processing Engine Technical Reference Manual  
 http://infocenter.arm.com/help/topic/com.arm.doc.ddi0462f/DDI0462F_cortex_a7_neon_mpe_r0p5_trm.pdf  
+
+-----
 
 - ARM® Cortex®-A53 MPCore Processor Technical Reference Manual  
 http://infocenter.arm.com/help/topic/com.arm.doc.ddi0500g/DDI0500G_cortex_a53_trm.pdf  
@@ -78,6 +86,8 @@ http://infocenter.arm.com/help/topic/com.arm.doc.ddi0501f/DDI0501F_cortex_a53_cr
 https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/RPI-3B-V1_2-SCHEMATIC-REDUCED.pdf  
 - MECHANICAL DRAWINGS RASPBERRY PI 3  
 https://www.raspberrypi.org/documentation/hardware/raspberrypi/mechanical/RPI-3B-V1_2.pdf  
+
+-----
 
 - MECHANICAL DRAWINGS RASPBERRY PI ZERO (V1.2)  
 https://www.raspberrypi.org/documentation/hardware/raspberrypi/mechanical/rpi-zero-v1_2_dimensions.pdf  
