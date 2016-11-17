@@ -15,7 +15,7 @@ How to run:
 Put follow files to FAT SD card.  
 * "bootcode.bin"  
 * "start.elf"  
-* "config.txt" &lt;- config_01.txt or config_23.txt  
+* "config.txt" &lt;- config_rp01.txt or config_rp23.txt  
 * "kernel.img"(RPZero/1) or "kernel7.img"(RP2/3)  
 
 Firmware:  
@@ -24,6 +24,7 @@ https://github.com/raspberrypi/firmware/tree/master/boot
 
 Reference
 ---------
+- Peripheral specification https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf  
 - dwelch67/raspberrypi: Raspberry Pi ARM based bare metal examples https://github.com/dwelch67/raspberrypi  
 - PeterLemon/RaspberryPi: Raspberry Pi Bare Metal Assembly Programming https://github.com/PeterLemon/RaspberryPi  
 
