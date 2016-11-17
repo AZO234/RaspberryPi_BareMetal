@@ -27,7 +27,7 @@ How to make:
 2. Open "Makefile " with texteditor, and change options.  
 BOARD=RPZERO/RP1/RPIOLD/RP2(/RP3/RP3_64)  
 3. make  
-4. If successfully, output "kernel.img"(RPZero/1/1old) or "kernel7.img"(RP2/3).  
+4. If successfully, output "kernel.img"(RPZero/1/1old) or "kernel7.img"(RP2/3) or "kernel8.img"(RP3_64).  
 
 How to run:  
 Put follow files to FAT SD card.  
