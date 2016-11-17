@@ -3,7 +3,7 @@ Frame Buffer sample
 
 This is Frame Buffer sample code.  
 
-Connect HDMI to display.
+Connect HDMI to 1080p display.
 
 If you can run this program,  
 you'll see color pattern.  
