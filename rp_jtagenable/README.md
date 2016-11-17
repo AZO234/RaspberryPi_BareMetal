@@ -66,5 +66,5 @@ Referrence
 - Peripheral specification https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf  
 - dwelch67/raspberrypi: Raspberry Pi ARM based bare metal examples https://github.com/dwelch67/raspberrypi  
 - documentation/README.md at master · 96boards/documentation https://github.com/96boards/documentation/blob/master/ConsumerEdition/HiKey/Configuration/JTAG/README.md  
-- Olimex ARM-USB-OCD-H / openocd-0.9.0 / libftd2xx1.1.12 / Raspberry Pi 2 / Ubuntu 15.04 https://gist.github.com/tonosaman/62a31e7991a41edb19c5
+- Olimex ARM-USB-OCD-H / openocd-0.9.0 / libftd2xx1.1.12 / Raspberry Pi 2 / Ubuntu 15.04 https://gist.github.com/tonosaman/62a31e7991a41edb19c5  
 
