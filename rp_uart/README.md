@@ -10,7 +10,7 @@ Connect follow pins to PC.
 * Pin10 RXD(GPIO15/ALT5)  
 
 If you can run this program,  
-Host PC key input will be callback.  
+Host PC key input will callback.  
 
 -----
 
