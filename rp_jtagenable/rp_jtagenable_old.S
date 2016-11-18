@@ -1,10 +1,6 @@
 .text
 .globl _start
 _start:
-	mrc  p15, 0, r0, c0, c0, 5	/* core0 only */
-	ands r0, r0, #0x3
-	bne  loop
-
 	ldr r3, =bcm283x_per
 	ldr r3, [r3]
 	ldr r2, =0x200000	/* GPFSEL0 */

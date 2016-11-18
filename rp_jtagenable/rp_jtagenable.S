@@ -1,9 +1,11 @@
 .text
 .globl _start
 _start:
+.ifndef AZO_CHIP_BCM2835
 	mrc  p15, 0, r0, c0, c0, 5	/* core0 only */
 	ands r0, r0, #0x3
 	bne  loop
+.endif
 
 	ldr r3, =bcm283x_per
 	ldr r3, [r3]
