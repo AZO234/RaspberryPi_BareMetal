@@ -49,7 +49,7 @@ RP2,3's core0,1,2,3 start here async in SVC mode.
 RP2,3's core0 start here. othre core are stop. in HYP mode.
 */
 
-.ifdef AZO_CPU_SINGLE
+.ifndef AZO_CPU_SINGLE
 	mrc  p15, 0, r0, c0, c0, 5
 	ands r0, r0, #0x3
 	beq  reset_single_c0
@@ -92,6 +92,7 @@ reset_single_c0:
 	orr r0, #0x1000			;@ Instruction Caches (Bit 12)
 	mcr p15, 0, r0, c1, c0, 0	;@ System Control Register = R0
 
+.ifndef AZO_CPU_SINGLE
 	/* core branch */
 	mrc p15, 0, r0, c0, c0, 5
 	and r0, r0, #0x3
@@ -101,15 +102,25 @@ reset_single_c0:
 	beq reset_c2
 	cmp r0, #3
 	beq reset_c3
+.endif
 
 .ifdef AZO_CHIP_BCM2835
 	/* copy vector */
 	mov r0,#0x8000
 	mov r1,#0x0000
-	ldmia r0!,{r2,r3,r4,r5,r6,r7,r8,r9}
-	stmia r1!,{r2,r3,r4,r5,r6,r7,r8,r9}
-	ldmia r0!,{r2,r3,r4,r5,r6,r7,r8,r9}
-	stmia r1!,{r2,r3,r4,r5,r6,r7,r8,r9}
+	ldmia r0!,{r2-r9}
+	stmia r1!,{r2-r9}
+	ldmia r0!,{r2-r9}
+	stmia r1!,{r2-r9}
+.endif
+.ifdef AZO_CHIP_HYP
+	/* copy vector */
+	mov r0,#0x8000
+	mov r1,#0x0000
+	ldmia r0!,{r2-r9}
+	stmia r1!,{r2-r9}
+	ldmia r0!,{r2-r9}
+	stmia r1!,{r2-r9}
 .endif
 
 .ifdef AZO_CHIP_HYP
@@ -212,10 +223,10 @@ reset_c3:
 
 ;@-------------------------------------------------------------------------
 irq:
-    push {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,lr}
+    push {r0-r12, lr}
     bl c_irq_handler
-    pop  {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,lr}
-    subs pc,lr,#4
+    pop  {r0-r12, lr}
+    subs pc, lr, #4
 
 ;@-------------------------------------------------------------------------
 .text
@@ -228,8 +239,12 @@ dummy:
 .text
 .globl arm_get_coreid
 arm_get_coreid:
+.ifdef AZO_CPU_SINGLE
+	mov r0, #0
+.else
     mrc p15, 0, r0, c0, c0, 5
-    and r0, #3
+    and r0, #0x3
+.endif
     bx lr
 
 ;@-------------------------------------------------------------------------
