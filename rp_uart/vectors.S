@@ -49,7 +49,8 @@ RP2,3's core0,1,2,3 start here async in SVC mode.
 RP2,3's core0 start here. othre core are stop. in HYP mode.
 */
 
-.ifndef AZO_CPU_SINGLE
+.ifndef AZO_CHIP_BCM2835
+.ifdef AZO_CPU_SINGLE
 	mrc  p15, 0, r0, c0, c0, 5
 	ands r0, r0, #0x3
 	beq  reset_single_c0
@@ -57,6 +58,7 @@ reset_single_cn:
 	wfi
 	b    reset_single_cn
 reset_single_c0:
+.endif
 .endif
 
 .ifdef AZO_CHIP_BCM2836
@@ -230,14 +232,16 @@ irq:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl dummy
+;@ void dummy(void);
+	.globl dummy
 dummy:
 	mov r0, r0
 	bx lr
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_get_coreid
+;@ uint32_t arm_get_coreid(void);
+	.globl arm_get_coreid
 arm_get_coreid:
 .ifdef AZO_CPU_SINGLE
 	mov r0, #0
@@ -249,7 +253,8 @@ arm_get_coreid:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_irq_enable
+;@ void arm_irq_enable(void);
+	.globl arm_irq_enable
 arm_irq_enable:
     mrs r0, cpsr
     bic r0, r0, #0x80
@@ -258,7 +263,8 @@ arm_irq_enable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_irq_disable
+;@ void arm_irq_disable(void);
+	.globl arm_irq_disable
 arm_irq_disable:
     mrs r0, cpsr
     orr r0, r0, #0x80
@@ -267,7 +273,8 @@ arm_irq_disable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_bp_enable
+;@ void arm_bp_enable(void);
+	.globl arm_bp_enable
 arm_bp_enable:
     push {lr}
     bl arm_bp_invalidate
@@ -282,7 +289,8 @@ arm_bp_enable_end:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_bp_disable
+;@ void arm_bp_disable(void);
+	.globl arm_bp_disable
 arm_bp_disable:
     push {lr}
     bl arm_bp_invalidate
@@ -297,7 +305,8 @@ arm_bp_disable_end:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_icache_enable
+;@ void arm_icache_enable(void);
+	.globl arm_icache_enable
 arm_icache_enable:
     push {lr}
     bl arm_icache_invalidate
@@ -310,7 +319,8 @@ arm_icache_enable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_icache_disable
+;@ void arm_icache_disable(void);
+	.globl arm_icache_disable
 arm_icache_disable:
     push {lr}
     bl arm_icache_invalidate
@@ -323,7 +333,8 @@ arm_icache_disable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_dcache_enable
+;@ void arm_dcache_enable(void);
+	.globl arm_dcache_enable
 arm_dcache_enable:
     push {lr}
     bl arm_dcache_clean_invalidate
@@ -336,7 +347,8 @@ arm_dcache_enable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_dcache_disable
+;@ void arm_dcache_disable(void);
+	.globl arm_dcache_disable
 arm_dcache_disable:
     push {lr}
     bl arm_dcache_clean_invalidate
@@ -349,7 +361,8 @@ arm_dcache_disable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_acquire_lock
+;@ void arm_acquire_lock(volatile void* lock);
+	.globl arm_acquire_lock
 arm_acquire_lock:
     mov r1, #1
     dmb
@@ -366,7 +379,8 @@ arm_acquire_lock:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_release_lock
+;@ void arm_release_lock(volatile void* lock);
+	.globl arm_release_lock
 arm_release_lock:
     mov r1, #0
     str r1, [r0]
@@ -376,7 +390,8 @@ arm_release_lock:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_smp_enable
+;@ void arm_smp_enable(void);
+	.globl arm_smp_enable
 arm_smp_enable:
     mrc p15, 0, r0, c1, c0, 1 ;@ set SMP bit in ACTLR
     orr r0, r0, #0x40
@@ -385,7 +400,8 @@ arm_smp_enable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_smp_disable
+;@ void arm_smp_disable(void);
+	.globl arm_smp_disable
 arm_smp_disable:
     mrc p15, 0, r0, c1, c0, 1 ;@ clear SMP bit in ACTLR
     bic r0, r0, #0x40
@@ -394,7 +410,8 @@ arm_smp_disable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_icache_invalidate
+;@ void arm_icache_invalidate(void);
+	.globl arm_icache_invalidate
 arm_icache_invalidate:
     mrc p15, 0, r0, c1, c0, 0 ;@ SCTLR
     tst r0, #0x1000
@@ -407,7 +424,8 @@ arm_icache_invalidate_end:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_dcache_invalidate
+;@ void arm_dcache_invalidate(void);
+	.globl arm_dcache_invalidate
 arm_dcache_invalidate:
     mrc p15, 0, r0, c1, c0, 0 ;@ SCTLR
     tst r0, #0x4
@@ -420,7 +438,8 @@ arm_dcache_invalidate_end:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_dcache_clean
+;@ void arm_dcache_clean(void);
+	.globl arm_dcache_clean
 arm_dcache_clean:
     mrc p15, 0, r0, c1, c0, 0 ;@ SCTLR
     tst r0, #0x4
@@ -434,7 +453,8 @@ arm_dcache_clean_end:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_dcache_clean_invalidate
+;@ void arm_dcache_clean_invalidate(void);
+	.globl arm_dcache_clean_invalidate
 arm_dcache_clean_invalidate:
     mrc p15, 0, r0, c1, c0, 0 ;@ SCTLR
     tst r0, #0x4
@@ -448,7 +468,8 @@ arm_dcache_clean_invalidate_end:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_cache_invalidate
+;@ void arm_cache_invalidate(void);
+	.globl arm_cache_invalidate
 arm_cache_invalidate:
     mrc p15, 0, r0, c1, c0, 0 ;@ SCTLR
     tst r0, #0x4
@@ -462,7 +483,8 @@ arm_cache_invalidate_end:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_bp_invalidate
+;@ void arm_bp_invalidate(void);
+	.globl arm_bp_invalidate
 arm_bp_invalidate:
     mrc p15, 0, r0, c1, c0, 0 ;@ SCTLR
     tst r0, #0x800
@@ -476,7 +498,8 @@ arm_bp_invalidate_end:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_tlb_invalidate
+;@ void arm_tlb_invalidate(void);
+	.globl arm_tlb_invalidate
 arm_tlb_invalidate:
     mov r0, #0
     mcr p15, 0, r0, c8, c7, 0 ;@ invalidate tlb
@@ -485,7 +508,8 @@ arm_tlb_invalidate:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_alignment_enable
+;@ void arm_alignment_enable(void);
+	.globl arm_alignment_enable
 arm_alignment_enable:
     mrc p15, 0, r0, c8, c7, 0 ;@ SCTLR
     orr r0, #0x2
@@ -495,7 +519,8 @@ arm_alignment_enable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_alignment_disable
+;@ void arm_alignment_disable(void);
+	.globl arm_alignment_disable
 arm_alignment_disable:
     mrc p15, 0, r0, c8, c7, 0 ;@ SCTLR
     bic r0, #0x2
@@ -505,8 +530,9 @@ arm_alignment_disable:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl rp2_mmu_reset
-rp2_mmu_reset:
+;@ void arm_mmu_reset(void);
+	.globl arm_mmu_reset
+arm_mmu_reset:
     push {lr}
     bl arm_dcache_clean_invalidate
     bl arm_icache_invalidate
@@ -551,7 +577,8 @@ arm_mmu_init:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_data_memorybarrier
+;@ void arm_data_memorybarrier(void);
+	.globl arm_data_memorybarrier
 arm_data_memorybarrier:
     isb
     dsb
@@ -560,15 +587,17 @@ arm_data_memorybarrier:
 
 ;@-------------------------------------------------------------------------
 .text
-.globl arm_instruction_syncbarrier
+;@ void arm_instruction_syncbarrier(void);
+	.globl arm_instruction_syncbarrier
 arm_instruction_syncbarrier:
     isb
     bx lr
 
 ;@-------------------------------------------------------------------------
 .text
-.globl drain_write_buffer
-drain_write_buffer:
+;@ void arm_drain_write_buffer(void);
+	.globl arm_drain_write_buffer
+arm_drain_write_buffer:
     mov r0, #0
     mcr p15, 0, r0, c7, c10, 4
     bx lr

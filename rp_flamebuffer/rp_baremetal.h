@@ -412,11 +412,33 @@ typedef unsigned int	uint32_t;
 typedef unsigned int	intptr_t;
 
 extern void dummy(void);
+extern uint32_t arm_get_coreid(void);
 extern void arm_irq_enable(void);
 extern void arm_irq_disable(void);
-extern uint32_t arm_get_coreid(void);
-extern void arm_acquire_lock(void*);
-extern void arm_release_lock(void*);
+extern void arm_bp_enable(void);
+extern void arm_bp_disable(void);
+extern void arm_icache_enable(void);
+extern void arm_icache_disable(void);
+extern void arm_dcache_enable(void);
+extern void arm_dcache_disable(void);
+extern void arm_acquire_lock(volatile void* lock);
+extern void arm_release_lock(volatile void* lock);
+extern void arm_smp_enable(void);
+extern void arm_smp_disable(void);
+extern void arm_icache_invalidate(void);
+extern void arm_dcache_invalidate(void);
+extern void arm_dcache_clean(void);
+extern void arm_dcache_clean_invalidate(void);
+extern void arm_cache_invalidate(void);
+extern void arm_bp_invalidate(void);
+extern void arm_tlb_invalidate(void);
+extern void arm_alignment_enable(void);
+extern void arm_alignment_disable(void);
+extern void arm_mmu_reset(void);
+extern void arm_mmu_init(volatile uint32_t* tlb);
+extern void arm_data_memorybarrier(void);
+extern void arm_instruction_syncbarrier(void);
+extern void arm_drain_write_buffer(void);
 
 //-------------------------------------------------------------------------
 inline unsigned int GET32(const unsigned int addr) {
