@@ -6,7 +6,7 @@ COPS = -Wall -O3 -nostdlib -nostartfiles -ffreestanding
 ASMOPS = -g3
 
 AZO_CPU_SINGLE = 1
-ifeq ($(AZO_MEM_VFP),1)
+ifeq ($(AZO_CPU_SINGLE),1)
 COPS := $(COPS) -DAZO_CPU_SINGLE
 ASMOPS := $(ASMOPS) --defsym AZO_CPU_SINGLE=1
 endif
