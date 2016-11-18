@@ -1,12 +1,12 @@
 
 ARMGNU ?= arm-none-eabi
 
-#COPS = -Wall -O0 -g3 -nostdlib -nostartfiles -ffreestanding
-COPS = -Wall -O3 -nostdlib -nostartfiles -ffreestanding
+COPS = -Wall -O0 -g3 -nostdlib -nostartfiles -ffreestanding
+#COPS = -Wall -O3 -nostdlib -nostartfiles -ffreestanding
 ASMOPS = -g3
 
 AZO_CPU_SINGLE = 1
-ifeq ($(AZO_MEM_VFP),1)
+ifeq ($(AZO_CPU_SINGLE),1)
 COPS := $(COPS) -DAZO_CPU_SINGLE
 ASMOPS := $(ASMOPS) --defsym AZO_CPU_SINGLE=1
 endif
@@ -17,10 +17,10 @@ COPS := $(COPS) -mfpu=vfp -DAZO_MEM_VFP
 ASMOPS := $(ASMOPS) -mfpu=vfp --defsym AZO_MEM_VFP=1
 endif
 
-#AZO_BOARD = RPZERO
+AZO_BOARD = RPZERO
 #AZO_BOARD = RP1
 #AZO_BOARD = RP2
-AZO_BOARD = RP3
+#AZO_BOARD = RP3
 ifeq ($(AZO_BOARD),RPZERO)
 COPS := $(COPS) -DAZO_CHIP_BCM2835 -DAZO_BOARD_RPZERO
 ASMOPS := $(ASMOPS) --defsym AZO_CHIP_BCM2835=1 --defsym AZO_BOARD_RPZERO=1

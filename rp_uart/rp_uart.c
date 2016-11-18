@@ -33,14 +33,7 @@ uint8_t uart_getc(void) {
 void uart_init(void) {
 	uint32_t ra;
 
-	PUT32(BCM283X_AUX_ENABLES, 1);		/* Enable UART1 */
-	PUT32(BCM283X_AUX_MU_IER_REG, 0);	/* Disable interrupt */
-	PUT32(BCM283X_AUX_MU_CNTL_REG, 0);	/* Disable Transmitter and Receiver */
-	PUT32(BCM283X_AUX_MU_LCR_REG, 3);	/* Works in 8-bit mode */
-	PUT32(BCM283X_AUX_MU_MCR_REG, 0);	/* Disable RTS */
-	PUT32(BCM283X_AUX_MU_IIR_REG, 0xC6);	/* Enable FIFO, Clear FIFO */
-	PUT32(BCM283X_AUX_MU_BAUD_REG, 270);	/* 115200 = system clock 250MHz / (8 * (baud + 1)), baud = 270 */
-
+	/* GPIO function set */
 	ra = GET32(BCM283X_GPIO_GPFSEL1);
 	ra &= ~(7<<12); /* GPIO14 */
 	ra |=   2<<12 ; /* ALT5 */
@@ -48,12 +41,20 @@ void uart_init(void) {
 	ra |=   2<<15 ;	/* ALT5 */
 	PUT32(BCM283X_GPIO_GPFSEL1, ra);
 
+	/* PullUD disable */
 	PUT32(BCM283X_GPIO_GPPUD, 0);
 	for(ra = 0; ra < 150; ra++) dummy();
 	PUT32(BCM283X_GPIO_GPPUDCLK0, (1 << 14) | (1 << 15));
 	for(ra = 0; ra < 150; ra++) dummy();
 	PUT32(BCM283X_GPIO_GPPUDCLK0, 0);
 
+	PUT32(BCM283X_AUX_ENABLES, 1);		/* Enable UART1 */
+	PUT32(BCM283X_AUX_MU_IER_REG, 0);	/* Disable interrupt */
+	PUT32(BCM283X_AUX_MU_CNTL_REG, 0);	/* Disable Transmitter and Receiver */
+	PUT32(BCM283X_AUX_MU_LCR_REG, 3);	/* Works in 8-bit mode */
+	PUT32(BCM283X_AUX_MU_MCR_REG, 0);	/* Disable RTS */
+	PUT32(BCM283X_AUX_MU_IIR_REG, 0xC6);	/* Enable FIFO, Clear FIFO */
+	PUT32(BCM283X_AUX_MU_BAUD_REG, 270);	/* 115200 = system clock 250MHz / (8 * (baud + 1)), baud = 270 */
 	PUT32(BCM283X_AUX_MU_CNTL_REG, 3);	/* Enable Transmitter and Receiver */
 }
 //------------------------------------------------------------------------
@@ -81,15 +82,15 @@ void hexstring(uint32_t d) {
 
 //------------------------------------------------------------------------
 int notmain(unsigned int earlypc) {
-	PUT32(BCM283X_IRQ_DISABLE1,1<<29);
+	PUT32(BCM283X_IRQ_DISABLE1, 1 << 29);	/* Disable interrupt */
 
 	uart_init();
 
-	PUT32(BCM283X_AUX_MU_IER_REG, 0x5);		/* Enable interrupt */
+	PUT32(BCM283X_AUX_MU_IER_REG, 0x5);	/* Enable receive interrupt */
 
 	hexstring(0x12345678);
 
-	PUT32(BCM283X_IRQ_ENABLE1,1<<29);
+	PUT32(BCM283X_IRQ_ENABLE1, 1 << 29);	/* Enable interrupt */
 
 	arm_irq_enable();
 

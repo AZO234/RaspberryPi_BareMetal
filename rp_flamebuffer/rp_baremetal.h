@@ -32,6 +32,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_GPIO_GPFSEL1	(BCM283X_GPIO_BASE + 0x04)	/* GPIO Function Select 1 32bit R/W */
 #define BCM283X_GPIO_GPFSEL2	(BCM283X_GPIO_BASE + 0x08)	/* GPIO Function Select 2 32bit R/W */
 #define BCM283X_GPIO_GPFSEL4	(BCM283X_GPIO_BASE + 0x10)	/* GPIO Function Select 4 32bit R/W */
+#define BCM283X_GPIO_GPSET0	(BCM283X_GPIO_BASE + 0x1C)
+#define BCM283X_GPIO_GPCLR0	(BCM283X_GPIO_BASE + 0x28)
 #define BCM283X_GPIO_GPPUD	(BCM283X_GPIO_BASE + 0x94)	/* GPIO Pin Pull-up/down Enable */
 #define BCM283X_GPIO_GPPUDCLK0	(BCM283X_GPIO_BASE + 0x98)	/* GPIO Pin Pull-up/down Enable Clock 0 */
 #define BCM283X_GPIO_GPPUDCLK1	(BCM283X_GPIO_BASE + 0x9C)	/* GPIO Pin Pull-up/down Enable Clock 1 */
@@ -143,6 +145,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_CM_PASSWORD	0x5A000000
 
 /*
+ *  Interrupt Controler
+ */
+#define BCM283X_IRQ_BASE (BCM283X_PER_BASE + 0xB200)
+#define BCM283X_IRQ_BASIC		(BCM283X_IRQ_BASE + 0x00)
+#define BCM283X_IRQ_PEND1		(BCM283X_IRQ_BASE + 0x04)
+#define BCM283X_IRQ_PEND2		(BCM283X_IRQ_BASE + 0x08)
+#define BCM283X_IRQ_FIQ_CONTROL		(BCM283X_IRQ_BASE + 0x0C)
+#define BCM283X_IRQ_ENABLE1		(BCM283X_IRQ_BASE + 0x10)
+#define BCM283X_IRQ_ENABLE2		(BCM283X_IRQ_BASE + 0x14)
+#define BCM283X_IRQ_ENABLE_BASIC	(BCM283X_IRQ_BASE + 0x18)
+#define BCM283X_IRQ_DISABLE1		(BCM283X_IRQ_BASE + 0x1C)
+#define BCM283X_IRQ_DISABLE2		(BCM283X_IRQ_BASE + 0x20)
+#define BCM283X_IRQ_DISABLE_BASIC	(BCM283X_IRQ_BASE + 0x24)
+
+/*
  * Random Number Generator(RNG)
  */
 #define BCM283X_RNG_BASE	(BCM283X_PER_BASE + 0x104000)
@@ -249,6 +266,141 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_PCM_INTEN_A	(BCM283X_PCM_BASE + 0x18)	/* PCM Interrupt Enables */
 #define BCM283X_PCM_INTSTC_A	(BCM283X_PCM_BASE + 0x1C)	/* PCM Interrupt Status & Clear */
 #define BCM283X_PCM_GRAY	(BCM283X_PCM_BASE + 0x20)	/* PCM Gray Mode Control */
+
+/*
+ *  System Timer
+ */
+#define BCM283X_STIMER_BASE (BCM283X_PER_BASE + 0x3000)
+#define BCM283X_STIMER_CS	(BCM283X_STIMER_BASE + 0x00)
+#define BCM283X_STIMER_CLO	(BCM283X_STIMER_BASE + 0x04)
+#define BCM283X_STIMER_CHI	(BCM283X_STIMER_BASE + 0x08)
+#define BCM283X_STIMER_C0	(BCM283X_STIMER_BASE + 0x0C)
+#define BCM283X_STIMER_C1	(BCM283X_STIMER_BASE + 0x10)
+#define BCM283X_STIMER_C2	(BCM283X_STIMER_BASE + 0x14)
+#define BCM283X_STIMER_C3	(BCM283X_STIMER_BASE + 0x18)
+
+/*
+ *  Auxiliary
+ */
+#define BCM283X_AUX_BASE (BCM283X_PER_BASE + 0x215000)
+#define BCM283X_AUX_IRQ			(BCM283X_AUX_BASE + 0x00)	/* Auxiliary Interrupt status 3 */
+#define BCM283X_AUX_ENABLES		(BCM283X_AUX_BASE + 0x04)	/* Auxiliary enables 3bit */
+#define BCM283X_AUX_MU_IO_REG		(BCM283X_AUX_BASE + 0x40)	/* Mini Uart I/O Data 8bit */
+#define BCM283X_AUX_MU_IER_REG		(BCM283X_AUX_BASE + 0x44)	/* Mini Uart Interrupt Enable 8bit */
+#define BCM283X_AUX_MU_IIR_REG		(BCM283X_AUX_BASE + 0x48)	/* Mini Uart Interrupt Identify 8bit */
+#define BCM283X_AUX_MU_LCR_REG		(BCM283X_AUX_BASE + 0x4C)	/* Mini Uart Line Control 8bit */
+#define BCM283X_AUX_MU_MCR_REG		(BCM283X_AUX_BASE + 0x50)	/* Mini Uart Modem Control 8bit */
+#define BCM283X_AUX_MU_LSR_REG		(BCM283X_AUX_BASE + 0x54)	/* Mini Uart Line Status 8bit */
+#define BCM283X_AUX_MU_MSR_REG		(BCM283X_AUX_BASE + 0x58)	/* Mini Uart Modem Status 8bit */
+#define BCM283X_AUX_MU_SCRATCH		(BCM283X_AUX_BASE + 0x5C)	/* Mini Uart Scratch 8bit */
+#define BCM283X_AUX_MU_CNTL_REG		(BCM283X_AUX_BASE + 0x60)	/* Mini Uart Extra Control 8bit */
+#define BCM283X_AUX_MU_STAT_REG		(BCM283X_AUX_BASE + 0x64)	/* Mini Uart Extra Status 32bit */
+#define BCM283X_AUX_MU_BAUD_REG		(BCM283X_AUX_BASE + 0x68)	/* Mini Uart Baudrate 16bit */
+#define BCM283X_AUX_SPI0_CNTL0_REG	(BCM283X_AUX_BASE + 0x80)	/* SPI 1 Control register 0 32bit */
+#define BCM283X_AUX_SPI0_CNTL1_REG	(BCM283X_AUX_BASE + 0x84)	/* SPI 1 Control register 1 8bit */
+#define BCM283X_AUX_SPI0_STAT_REG	(BCM283X_AUX_BASE + 0x88)	/* SPI 1 Status 32bit */
+#define BCM283X_AUX_SPI0_IO_REG		(BCM283X_AUX_BASE + 0x90)	/* SPI 1 Data 32bit */
+#define BCM283X_AUX_SPI0_PEEK_REG	(BCM283X_AUX_BASE + 0x94)	/* SPI 1 Peek 16bit */
+#define BCM283X_AUX_SPI1_CNTL0_REG	(BCM283X_AUX_BASE + 0xC0)	/* SPI 2 Control register 0 32bit */
+#define BCM283X_AUX_SPI1_CNTL1_REG	(BCM283X_AUX_BASE + 0xC4)	/* SPI 2 Control register 1 8bit */
+
+#if defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#define BCM283X_PER_BASE_40000000 (0x40000000)
+
+/*
+ *  Core Timer
+ */
+#define BCM283X_CTIMER_CTL	(BCM283X_PER_BASE_40000000 + 0x00)	/* Control register */
+#define BCM283X_CTIMER_PRE	(BCM283X_PER_BASE_40000000 + 0x08)	/* Core timer prescaler */
+#define BCM283X_CTIMER_LS32B	(BCM283X_PER_BASE_40000000 + 0x1C)	/* Core timer access LS 32 bits */
+#define BCM283X_CTIMER_MS32B	(BCM283X_PER_BASE_40000000 + 0x20)	/* Core timer access MS 32 bits */
+
+/*
+ *  GPU interrupt
+ */
+#define BCM283X_GPUINT_ROUTE	(BCM283X_PER_BASE_40000000 + 0x0C)	/* interrupts routing */
+
+/*
+ *  Performance Monitor
+ */
+#define BCM283X_PMINT_ROUTESET	(BCM283X_PER_BASE_40000000 + 0x10)	/* Performance Monitor Interrupts routing-set */
+#define BCM283X_PMINT_ROUTECLR	(BCM283X_PER_BASE_40000000 + 0x14)	/* Performance Monitor Interrupts routing-clear */
+
+/*
+ *  Local Timer
+ */
+#define BCM283X_LTIMER_CTLSTA	(BCM283X_PER_BASE_40000000 + 0x34)	/* Local timer control & status */
+#define BCM283X_LTIMER_WRITE	(BCM283X_PER_BASE_40000000 + 0x38)	/* Local timer write flags */
+#define BCM283X_LTIMER_ROUTE	(BCM283X_PER_BASE_40000000 + 0x24)	/* Local Interrupt 0 [1-7] routing */
+
+/*
+ *  AXI Timer
+ */
+#define BCM283X_AXITIMER_CTL	(BCM283X_PER_BASE_40000000 + 0x2C)	/* Axi outstanding counters */
+#define BCM283X_AXITIMER_IRQ	(BCM283X_PER_BASE_40000000 + 0x30)	/* Axi outstanding IRQ */
+
+/*
+ *  ARM Core Timer
+ */
+#define BCM283X_C0TIMER_INTCTL	(BCM283X_PER_BASE_40000000 + 0x40)	/* Core0 timers Interrupt control */
+#define BCM283X_C1TIMER_INTCTL	(BCM283X_PER_BASE_40000000 + 0x44)	/* Core1 timers Interrupt control */
+#define BCM283X_C2TIMER_INTCTL	(BCM283X_PER_BASE_40000000 + 0x48)	/* Core2 timers Interrupt control */
+#define BCM283X_C3TIMER_INTCTL	(BCM283X_PER_BASE_40000000 + 0x4C)	/* Core3 timers Interrupt control */
+/*
+ *  ARM Core Mailbox interrupt
+ */
+#define BCM283X_C0MB_INTCTL	(BCM283X_PER_BASE_40000000 + 0x50)	/* Core0 Mailboxes Interrupt control */
+#define BCM283X_C1MB_INTCTL	(BCM283X_PER_BASE_40000000 + 0x54)	/* Core1 Mailboxes Interrupt control */
+#define BCM283X_C2MB_INTCTL	(BCM283X_PER_BASE_40000000 + 0x58)	/* Core2 Mailboxes Interrupt control */
+#define BCM283X_C3MB_INTCTL	(BCM283X_PER_BASE_40000000 + 0x5C)	/* Core3 Mailboxes Interrupt control */
+/*
+ *  ARM Core IRQ・FIQ status
+ */
+#define BCM283X_C0_IRQSOURCE	(BCM283X_PER_BASE_40000000 + 0x60)	/* Core0 IRQ Source */
+#define BCM283X_C1_IRQSOURCE	(BCM283X_PER_BASE_40000000 + 0x64)	/* Core1 IRQ Source */
+#define BCM283X_C2_IRQSOURCE	(BCM283X_PER_BASE_40000000 + 0x68)	/* Core2 IRQ Source */
+#define BCM283X_C3_IRQSOURCE	(BCM283X_PER_BASE_40000000 + 0x6C)	/* Core3 IRQ Source */
+#define BCM283X_C0_FIQSOURCE	(BCM283X_PER_BASE_40000000 + 0x70)	/* Core0 FIQ Source */
+#define BCM283X_C1_FIQSOURCE	(BCM283X_PER_BASE_40000000 + 0x74)	/* Core1 FIQ Source */
+#define BCM283X_C2_FIQSOURCE	(BCM283X_PER_BASE_40000000 + 0x78)	/* Core2 FIQ Source */
+#define BCM283X_C3_FIQSOURCE	(BCM283X_PER_BASE_40000000 + 0x7C)	/* Core3 FIQ Source */
+/*
+ *  ARM Core Mailbox
+ */
+#define BCM283X_C0MB_0WS	(BCM283X_PER_BASE_40000000 + 0x80)	/* Core 0 Mailbox 0 write-set (WO) */
+#define BCM283X_C0MB_1WS	(BCM283X_PER_BASE_40000000 + 0x84)	/* Core 0 Mailbox 1 write-set (WO) */
+#define BCM283X_C0MB_2WS	(BCM283X_PER_BASE_40000000 + 0x88)	/* Core 0 Mailbox 2 write-set (WO) */
+#define BCM283X_C0MB_3WS	(BCM283X_PER_BASE_40000000 + 0x8C)	/* Core 0 Mailbox 3 write-set (WO) */
+#define BCM283X_C1MB_0WS	(BCM283X_PER_BASE_40000000 + 0x90)	/* Core 1 Mailbox 0 write-set (WO) */
+#define BCM283X_C1MB_1WS	(BCM283X_PER_BASE_40000000 + 0x94)	/* Core 1 Mailbox 1 write-set (WO) */
+#define BCM283X_C1MB_2WS	(BCM283X_PER_BASE_40000000 + 0x98)	/* Core 1 Mailbox 2 write-set (WO) */
+#define BCM283X_C1MB_3WS	(BCM283X_PER_BASE_40000000 + 0x9C)	/* Core 1 Mailbox 3 write-set (WO) */
+#define BCM283X_C2MB_0WS	(BCM283X_PER_BASE_40000000 + 0xA0)	/* Core 2 Mailbox 0 write-set (WO) */
+#define BCM283X_C2MB_1WS	(BCM283X_PER_BASE_40000000 + 0xA4)	/* Core 2 Mailbox 1 write-set (WO) */
+#define BCM283X_C2MB_2WS	(BCM283X_PER_BASE_40000000 + 0xA8)	/* Core 2 Mailbox 2 write-set (WO) */
+#define BCM283X_C2MB_3WS	(BCM283X_PER_BASE_40000000 + 0xAC)	/* Core 2 Mailbox 3 write-set (WO) */
+#define BCM283X_C3MB_0WS	(BCM283X_PER_BASE_40000000 + 0xB0)	/* Core 3 Mailbox 0 write-set (WO) */
+#define BCM283X_C3MB_1WS	(BCM283X_PER_BASE_40000000 + 0xB4)	/* Core 3 Mailbox 1 write-set (WO) */
+#define BCM283X_C3MB_2WS	(BCM283X_PER_BASE_40000000 + 0xB8)	/* Core 3 Mailbox 2 write-set (WO) */
+#define BCM283X_C3MB_3WS	(BCM283X_PER_BASE_40000000 + 0xBC)	/* Core 3 Mailbox 3 write-set (WO) */
+#define BCM283X_C0MB_0RC	(BCM283X_PER_BASE_40000000 + 0xC0)	/* Core 0 Mailbox 0 read & write-high-to-clear */
+#define BCM283X_C0MB_1RC	(BCM283X_PER_BASE_40000000 + 0xC4)	/* Core 0 Mailbox 1 read & write-high-to-clear */
+#define BCM283X_C0MB_2RC	(BCM283X_PER_BASE_40000000 + 0xC8)	/* Core 0 Mailbox 2 read & write-high-to-clear */
+#define BCM283X_C0MB_3RC	(BCM283X_PER_BASE_40000000 + 0xCC)	/* Core 0 Mailbox 3 read & write-high-to-clear */
+#define BCM283X_C1MB_0RC	(BCM283X_PER_BASE_40000000 + 0xD0)	/* Core 1 Mailbox 0 read & write-high-to-clear */
+#define BCM283X_C1MB_1RC	(BCM283X_PER_BASE_40000000 + 0xD4)	/* Core 1 Mailbox 1 read & write-high-to-clear */
+#define BCM283X_C1MB_2RC	(BCM283X_PER_BASE_40000000 + 0xD8)	/* Core 1 Mailbox 2 read & write-high-to-clear */
+#define BCM283X_C1MB_3RC	(BCM283X_PER_BASE_40000000 + 0xDC)	/* Core 1 Mailbox 3 read & write-high-to-clear */
+#define BCM283X_C2MB_0RC	(BCM283X_PER_BASE_40000000 + 0xE0)	/* Core 2 Mailbox 0 read & write-high-to-clear */
+#define BCM283X_C2MB_1RC	(BCM283X_PER_BASE_40000000 + 0xE4)	/* Core 2 Mailbox 1 read & write-high-to-clear */
+#define BCM283X_C2MB_2RC	(BCM283X_PER_BASE_40000000 + 0xE8)	/* Core 2 Mailbox 2 read & write-high-to-clear */
+#define BCM283X_C2MB_3RC	(BCM283X_PER_BASE_40000000 + 0xEC)	/* Core 2 Mailbox 3 read & write-high-to-clear */
+#define BCM283X_C3MB_0RC	(BCM283X_PER_BASE_40000000 + 0xF0)	/* Core 3 Mailbox 0 read & write-high-to-clear */
+#define BCM283X_C3MB_1RC	(BCM283X_PER_BASE_40000000 + 0xF4)	/* Core 3 Mailbox 1 read & write-high-to-clear */
+#define BCM283X_C3MB_2RC	(BCM283X_PER_BASE_40000000 + 0xF8)	/* Core 3 Mailbox 2 read & write-high-to-clear */
+#define BCM283X_C3MB_3RC	(BCM283X_PER_BASE_40000000 + 0xFC)	/* Core 3 Mailbox 3 read & write-high-to-clear */
+#endif
+
 //-------------------------------------------------------------------------
 
 #ifndef AZO_MACRO_ONLY
@@ -260,8 +412,8 @@ typedef unsigned int	uint32_t;
 typedef unsigned int	intptr_t;
 
 extern void dummy(void);
-extern void arm_enable_irq (void);
-extern void arm_disable_irq (void);
+extern void arm_irq_enable(void);
+extern void arm_irq_disable(void);
 extern uint32_t arm_get_coreid(void);
 extern void arm_acquire_lock(void*);
 extern void arm_release_lock(void*);
