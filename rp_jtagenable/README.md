@@ -58,6 +58,23 @@ autoreconf -iv
 make -j4  
 sudo make install
 ```
+and  
+```shell  
+sudo -s  
+cp cfg/bcm2835.cfg /usr/local/share/openocd/scripts/board/  
+cp cfg/bcm2836.cfg /usr/local/share/openocd/scripts/board/  
+cp cfg/ARMv8/bcm2837.cfg /usr/local/share/openocd/scripts/board/  
+cp cfg/ARMv8/bcm2837_64.cfg /usr/local/share/openocd/scripts/board/  
+```
+
+When debug, run follow command.
+```shell
+openocd -f interface/yourinterface.cfg -f board/bcm2835.cfg  
+```
+
+You can use GDB, or  
+Eclipce + OpenOCD debugging Eclipse plug-in.  
+http://gnuarmeclipse.github.io/debug/openocd/  
 
 -----
 
