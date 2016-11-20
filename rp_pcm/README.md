@@ -2,7 +2,7 @@ PCM(I2S) sample
 ===============
 
 This is PCM/I2S sample code.  
-(You connot hear 3.5 phono jack.)  
+(You connot hear 3.5 phone jack.)  
 You need any external I2S DAC board.  
 
 Connect I2S DAC board to below pins.  
