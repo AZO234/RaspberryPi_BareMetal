@@ -9,7 +9,7 @@ Connect follow pins to PC.
 * Pin10 RXD(GPIO15/ALT5)  
 
 If you can run this program,  
-output CPU core number of got lock.
+output to terminal, CPU core number of got lock.
 
 -----
 
