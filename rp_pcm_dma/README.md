@@ -16,7 +16,9 @@ you'll hear 1kHz(48kHz/16bit/stereo) sin-curve sound.
 
 This sample can play 384kHz/32bit/stereo sound.  
 I used Pimoroni's "pHAT DAC".  
-https://shop.pimoroni.com/products/phat-dac
+https://shop.pimoroni.com/products/phat-dac  
+
+768kHz/32bit/stereo was failed.  
 
 -----
 
