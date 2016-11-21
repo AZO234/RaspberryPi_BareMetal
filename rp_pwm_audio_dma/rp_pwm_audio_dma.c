@@ -294,7 +294,7 @@ void pwm_raw_play(azo_rawpwmdata_t* rawdata) {
 //------------------------------------------------------------------------
 int notmain(unsigned int earlypc)
 {
-/*	azo_pcmdata_t pcmdata = {
+	azo_pcmdata_t pcmdata = {
 		96,
 		1,
 		48000,
@@ -303,8 +303,8 @@ int notmain(unsigned int earlypc)
 		1,
 		azo_sin_1k_48khz16bit
 	};
-*/
-	azo_pcmdata_t pcmdata = {
+
+/*	azo_pcmdata_t pcmdata = {
 		288,
 		1,
 		96000,
@@ -313,7 +313,7 @@ int notmain(unsigned int earlypc)
 		1,
 		azo_sin_1k_96khz24bit
 	};
-
+*/
 /*	azo_pcmdata_t pcmdata = {
 		192,
 		1,
