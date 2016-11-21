@@ -3,10 +3,11 @@ Frame Buffer sample
 
 This is Frame Buffer sample code.  
 
-Connect HDMI to 1080p display.
+Connect HDMI to 1080p/24bit color display.
 
 If you can run this program,  
 you'll see color pattern.  
+(This pattern is Japanese broadcast standard ARIB STD-B28.)
 
 -----
 
@@ -32,5 +33,5 @@ https://github.com/raspberrypi/firmware/tree/master/boot
 
 Reference
 ---------
-* PeterLemon/RaspberryPi: Raspberry Pi Bare Metal Assembly Programming https://github.com/PeterLemon/RaspberryPi  
+- PeterLemon/RaspberryPi: Raspberry Pi Bare Metal Assembly Programming https://github.com/PeterLemon/RaspberryPi  
 

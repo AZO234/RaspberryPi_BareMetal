@@ -38,9 +38,9 @@ endif
 endif
 
 ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RPZERO RP1))
-gcc : rp_flamebuffer.hex kernel.img rp_flamebuffer.hex rp_flamebuffer.syms rp_flamebuffer.srec
+gcc : rp_framebuffer.hex kernel.img rp_framebuffer.hex rp_framebuffer.syms rp_framebuffer.srec
 else ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RP2 RP3))
-gcc : rp_flamebuffer.hex kernel7.img rp_flamebuffer.hex rp_flamebuffer.syms rp_flamebuffer.srec
+gcc : rp_framebuffer.hex kernel7.img rp_framebuffer.hex rp_framebuffer.syms rp_framebuffer.srec
 endif
 
 all : gcc
@@ -60,35 +60,35 @@ clean :
 vectors.o : vectors.S
 	$(ARMGNU)-as $(ASMOPS) vectors.S -o vectors.o
 
-rp_flamebuffer.o : rp_flamebuffer.c
-	$(ARMGNU)-gcc $(COPS) -c rp_flamebuffer.c -o rp_flamebuffer.o
+rp_framebuffer.o : rp_framebuffer.c
+	$(ARMGNU)-gcc $(COPS) -c rp_framebuffer.c -o rp_framebuffer.o
 
 ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RPZERO RP1))
-rp_flamebuffer.elf : memmap_rp01 vectors.o rp_flamebuffer.o
+rp_framebuffer.elf : memmap_rp01 vectors.o rp_framebuffer.o
 else ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RP2 RP3))
-rp_flamebuffer.elf : memmap_rp23 vectors.o rp_flamebuffer.o
+rp_framebuffer.elf : memmap_rp23 vectors.o rp_framebuffer.o
 endif
 ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RPZERO RP1))
-	$(ARMGNU)-ld vectors.o rp_flamebuffer.o -T memmap_rp01 -o rp_flamebuffer.elf
+	$(ARMGNU)-ld vectors.o rp_framebuffer.o -T memmap_rp01 -o rp_framebuffer.elf
 else ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RP2 RP3))
-	$(ARMGNU)-ld vectors.o rp_flamebuffer.o -T memmap_rp23 -o rp_flamebuffer.elf
+	$(ARMGNU)-ld vectors.o rp_framebuffer.o -T memmap_rp23 -o rp_framebuffer.elf
 endif
-	$(ARMGNU)-objdump -D rp_flamebuffer.elf > rp_flamebuffer.list
+	$(ARMGNU)-objdump -D rp_framebuffer.elf > rp_framebuffer.list
 
 ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RPZERO RP1))
-kernel.img : rp_flamebuffer.elf
-	$(ARMGNU)-objcopy rp_flamebuffer.elf -O binary kernel.img
+kernel.img : rp_framebuffer.elf
+	$(ARMGNU)-objcopy rp_framebuffer.elf -O binary kernel.img
 else ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RP2 RP3))
-kernel7.img : rp_flamebuffer.elf
-	$(ARMGNU)-objcopy rp_flamebuffer.elf -O binary kernel7.img
+kernel7.img : rp_framebuffer.elf
+	$(ARMGNU)-objcopy rp_framebuffer.elf -O binary kernel7.img
 endif
 
-rp_flamebuffer.hex : rp_flamebuffer.elf
-	$(ARMGNU)-objcopy rp_flamebuffer.elf -O ihex rp_flamebuffer.hex
+rp_framebuffer.hex : rp_framebuffer.elf
+	$(ARMGNU)-objcopy rp_framebuffer.elf -O ihex rp_framebuffer.hex
 
-rp_flamebuffer.syms : rp_flamebuffer.elf
-	$(ARMGNU)-nm -n rp_flamebuffer.elf > rp_flamebuffer.syms
+rp_framebuffer.syms : rp_framebuffer.elf
+	$(ARMGNU)-nm -n rp_framebuffer.elf > rp_framebuffer.syms
 
-rp_flamebuffer.srec : rp_flamebuffer.elf
-	$(ARMGNU)-objcopy rp_flamebuffer.elf -O srec rp_flamebuffer.srec
+rp_framebuffer.srec : rp_framebuffer.elf
+	$(ARMGNU)-objcopy rp_framebuffer.elf -O srec rp_framebuffer.srec
 

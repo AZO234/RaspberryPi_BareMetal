@@ -77,6 +77,8 @@ You can use GDB, or
 Eclipce + OpenOCD debugging Eclipse plug-in.  
 http://gnuarmeclipse.github.io/debug/openocd/  
 
+--- But, I don't success ARMv8 connection. Please tell me good method :(  
+
 -----
 
 Referrence

@@ -14,6 +14,11 @@ You can use VCC and GND.
 If you can run this program,  
 you'll hear 1kHz(44.1kHz/16bit/stereo) sin-curve sound.  
 
+This sample can play until 92kHz/32bit/stereo sound.  
+More than 192kHz, sound noisy. Probably CPU and memory need more speed.  
+I used Pimoroni's "pHAT DAC".  
+https://shop.pimoroni.com/products/phat-dac
+
 -----
 
 For Raspberry Pi Zero/1/2/3 Bare Metal code by AZO.  
