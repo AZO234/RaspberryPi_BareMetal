@@ -88,12 +88,12 @@ reset_single_c0:
 .endif
 
 	/* enable L1 Cache */
-	mrc p15, 0, r0, c1, c0, 0	;@ r0 = System Control Register
+/*	mrc p15, 0, r0, c1, c0, 0	;@ r0 = System Control Register
 	orr r0, #0x0004			;@ Data Cache (Bit 2)
 	orr r0, #0x0800			;@ Branch Prediction (Bit 11)
 	orr r0, #0x1000			;@ Instruction Caches (Bit 12)
 	mcr p15, 0, r0, c1, c0, 0	;@ System Control Register = R0
-
+*/
 .ifndef AZO_CPU_SINGLE
 	/* core branch */
 	mrc p15, 0, r0, c0, c0, 5
