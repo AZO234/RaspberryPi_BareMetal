@@ -12,7 +12,7 @@ Connect I2S DAC board to below pins.
 You can use VCC and GND.  
 
 If you can run this program,  
-you'll hear 1kHz(44.1kHz/16bit/stereo) sin-curve sound.  
+you'll hear 1kHz(48kHz/16bit/stereo) sin-curve sound.  
 
 This sample can play until 92kHz/32bit/stereo sound.  
 More than 192kHz, sound noisy. Probably CPU and memory need more speed.  
@@ -43,7 +43,7 @@ https://github.com/raspberrypi/firmware/tree/master/boot
 
 Reference
 ---------
-* I²S - Wikipedia https://en.wikipedia.org/wiki/I%C2%B2S  
-* 04 « 4月 « 2008 « PCオーディオブログ http://blog.ratocsystems.com/wp/2008/04/04/19/  
+- I²S - Wikipedia https://en.wikipedia.org/wiki/I%C2%B2S  
+- 04 « 4月 « 2008 « PCオーディオブログ http://blog.ratocsystems.com/wp/2008/04/04/19/  
 
 

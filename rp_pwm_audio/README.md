@@ -6,7 +6,7 @@ This is PWM audio sample code.
 Plug phone jack 3.5.  
 
 If you can run this program,  
-you'll hear 1kHz(44.1kHz/13bit/stereo) sin-curve sound.  
+you'll hear 1kHz(48kHz/13bit/stereo) sin-curve sound.  
 More than 14bit, sound was not played.  
 
 -----
