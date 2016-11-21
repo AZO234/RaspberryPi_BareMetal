@@ -24,7 +24,7 @@ https://shop.pimoroni.com/products/phat-dac
 For Raspberry Pi Zero/1/2/3 Bare Metal code by AZO.  
 
 How to make:  
-1. install "arm-none-eabi-gcc".
+1. install "arm-none-eabi-gcc".  
 2. Open "Makefile " with texteditor, and change options.  
 BOARD=RPZERO/RP1/RP2/RP3  
 3. make  
