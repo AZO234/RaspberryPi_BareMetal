@@ -7,7 +7,7 @@ Plug phone jack 3.5.
 
 If you can run this program,  
 you'll hear 1kHz(48kHz/13bit/stereo) sin-curve sound.  
-More than 14bit, sound was not played.  
+More than 14bit, sound is strangely.  
 
 -----
 
@@ -24,7 +24,7 @@ How to run:
 Put follow files to FAT SD card.  
 * "bootcode.bin"  
 * "start.elf"  
-* "config.txt" &lt;- config_rp1.txt or config_rp23.txt  
+* "config.txt" &lt;- config_rp01.txt or config_rp23.txt  
 * "kernel.img"(RP1) or "kernel7.img"(RP2/3)  
 
 Firmware:  

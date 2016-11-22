@@ -33,7 +33,7 @@ How to run:
 Put follow files to FAT SD card.  
 * "bootcode.bin"  
 * "start.elf"  
-* "config.txt" &lt;- config_rp01.txt or config_rp23.txt or config_rp3_64.txt  
+* "config.txt" &lt;- config_rp23.txt or config_rp3_64.txt, Unnecessary for RPZero/1.  
 * "kernel.img"(RPZero/1) or "kernel7.img"(RP2/3) or "kernel8.img"(RP3_64)  
 
 Firmware:  

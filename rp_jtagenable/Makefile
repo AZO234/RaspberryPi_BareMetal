@@ -15,15 +15,15 @@ endif
 ASMOPS = -g3
 
 ifeq ($(AZO_BOARD),RPZERO)
-ASMOPS := $(ASMOPS) --defsym AZO_CHIP_BCM2835=1 --defsym AZO_BOARD_RPZERO=1
-else ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RP1OLD RP1))
-ASMOPS := $(ASMOPS) --defsym AZO_CHIP_BCM2835=1 --defsym AZO_BOARD_RP1=1
+ASMOPS := $(ASMOPS) -DAZO_CHIP_BCM2835 -DAZO_BOARD_RPZERO
+else ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RP1 RP1OLD))
+ASMOPS := $(ASMOPS) -DAZO_CHIP_BCM2835 -DAZO_BOARD_RP1
 else ifeq ($(AZO_BOARD),RP2)
-ASMOPS := $(ASMOPS) --defsym AZO_CHIP_BCM2836=1 --defsym AZO_BOARD_RP2=1
+ASMOPS := $(ASMOPS) -DAZO_CHIP_BCM2836 -DAZO_BOARD_RP2
 else ifeq ($(AZO_BOARD),RP3)
-ASMOPS := $(ASMOPS) --defsym AZO_CHIP_BCM2837=1 --defsym AZO_BOARD_RP3=1
+ASMOPS := $(ASMOPS) -DAZO_CHIP_BCM2837 -DAZO_BOARD_RP3
 else ifeq ($(AZO_BOARD),RP3_64)
-ASMOPS := $(ASMOPS) --defsym AZO_CHIP_BCM2837=1 --defsym AZO_BOARD_RP3_64=1
+ASMOPS := $(ASMOPS) -DAZO_CHIP_BCM2837 -DAZO_BOARD_RP3_64
 endif
 
 ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RPZERO RP1 RP1OLD))
@@ -49,11 +49,11 @@ clean :
 	rm -f *.clang.opt.s
 
 rp_jtagenable.o : rp_jtagenable.S
-	$(ARMGNU)-as $(ASMOPS) rp_jtagenable.S -o rp_jtagenable.o
+	$(ARMGNU)-gcc $(ASMOPS) -c rp_jtagenable.S -o rp_jtagenable.o
 rp_jtagenable_old.o : rp_jtagenable_old.S
-	$(ARMGNU)-as $(ASMOPS) rp_jtagenable_old.S -o rp_jtagenable_old.o
+	$(ARMGNU)-gcc $(ASMOPS) -c rp_jtagenable_old.S -o rp_jtagenable_old.o
 rp_jtagenable_64.o : rp_jtagenable_64.S
-	$(ARMGNU)-as $(ASMOPS) rp_jtagenable_64.S -o rp_jtagenable_64.o
+	$(ARMGNU)-gcc $(ASMOPS) -c rp_jtagenable_64.S -o rp_jtagenable_64.o
 
 ifeq ($(AZO_BOARD),$(filter $(AZO_BOARD),RPZERO RP1))
 rp_jtagenable.elf : memmap_rp01 rp_jtagenable.o

@@ -449,7 +449,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 //-------------------------------------------------------------------------
 
-#ifndef AZO_MACRO_ONLY
+#ifndef AZO_ASSEMBLY
 
 //-------------------------------------------------------------------------
 typedef char		  int8_t;
@@ -490,6 +490,8 @@ extern void arm_instruction_syncbarrier(void);
 extern void arm_drain_write_buffer(void);
 
 extern uint32_t azo_uint32_div(uint32_t val, uint32_t div);
+extern uint32_t azo_uint32_mod(uint32_t val, uint32_t div);
+extern uint32_t bcm283x_get_cpuclock_med(uint32_t count);
 
 //-------------------------------------------------------------------------
 /* DMA Control Block */
@@ -553,6 +555,6 @@ inline void PUT32(const unsigned int addr, const unsigned int val) {
 	*(volatile unsigned int*)addr = val;
 }
 
-#endif	/* AZO_MACRO_ONLY */
+#endif	/* AZO_ASSEMBLY */
 #endif	/* RP_BAREMETAL_H */
 

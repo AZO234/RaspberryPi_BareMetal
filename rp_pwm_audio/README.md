@@ -7,7 +7,7 @@ Plug phone jack 3.5.
 
 If you can run this program,  
 you'll hear 1kHz(48kHz/13bit/stereo) sin-curve sound.  
-More than 14bit, sound was not played.  
+More than 14bit, sound is strangely.  
 
 -----
 

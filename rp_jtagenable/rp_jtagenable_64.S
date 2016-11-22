@@ -1,5 +1,5 @@
 .text
-.globl _start
+	.globl _start
 _start:
 	mrs  x0, S3_3_c0_c0_5	/* core0 only */
 	ands x0, x0, #0x3
@@ -79,5 +79,5 @@ _start_disable_pullud_2:
 
 loop:	b loop
 
-bcm283x_per: .word 0x3F000000
+bcm283x_per: .long 0x3F000000
 

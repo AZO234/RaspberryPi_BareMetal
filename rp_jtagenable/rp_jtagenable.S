@@ -1,11 +1,11 @@
 .text
-.globl _start
+	.globl _start
 _start:
-.ifndef AZO_CHIP_BCM2835
+#ifndef AZO_CHIP_BCM2835
 	mrc  p15, 0, r0, c0, c0, 5	/* core0 only */
 	ands r0, r0, #0x3
 	bne  loop
-.endif
+#endif	/* AZO_CHIP_BCM2835 */
 
 	ldr r3, =bcm283x_per
 	ldr r3, [r3]
@@ -81,13 +81,11 @@ _start_disable_pullud_2:
 
 loop:	b loop
 
-.ifdef AZO_CHIP_BCM2835
-bcm283x_per: .word 0x20000000
-.endif
-.ifdef AZO_CHIP_BCM2836
-bcm283x_per: .word 0x3F000000
-.endif
-.ifdef AZO_CHIP_BCM2837
-bcm283x_per: .word 0x3F000000
-.endif
+#if defined(AZO_CHIP_BCM2835)
+bcm283x_per: .long 0x20000000
+#elif defined(AZO_CHIP_BCM2836) || (AZO_CHIP_BCM2837)
+bcm283x_per: .long 0x3F000000
+#else
+#error define chip type.
+#endif
 

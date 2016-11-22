@@ -1,5 +1,5 @@
 .text
-.globl _start
+	.globl _start
 _start:
 	ldr r3, =bcm283x_per
 	ldr r3, [r3]
@@ -79,5 +79,5 @@ _start_disable_pullud_2:
 
 loop:	b loop
 
-bcm283x_per: .word 0x20000000
+bcm283x_per: .long 0x20000000
 

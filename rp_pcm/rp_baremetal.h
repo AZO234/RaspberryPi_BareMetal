@@ -160,7 +160,40 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_IRQ_DISABLE_BASIC	(BCM283X_IRQ_BASE + 0x24)
 
 /*
- * Random Number Generator(RNG)
+ *  DMA
+ */
+#define BCM283X_DMA_BASE (BCM283X_PER_BASE + 0x7000)
+#define BCM283X_DMA0_BASE	(BCM283X_DMA_BASE + 0x000)	/* DMA Channel 0 Register Set */
+#define BCM283X_DMA1_BASE	(BCM283X_DMA_BASE + 0x100)	/* DMA Channel 1 Register Set */
+#define BCM283X_DMA2_BASE	(BCM283X_DMA_BASE + 0x200)	/* DMA Channel 2 Register Set */
+#define BCM283X_DMA3_BASE	(BCM283X_DMA_BASE + 0x300)	/* DMA Channel 3 Register Set */
+#define BCM283X_DMA4_BASE	(BCM283X_DMA_BASE + 0x400)	/* DMA Channel 4 Register Set */
+#define BCM283X_DMA5_BASE	(BCM283X_DMA_BASE + 0x500)	/* DMA Channel 5 Register Set */
+#define BCM283X_DMA6_BASE	(BCM283X_DMA_BASE + 0x600)	/* DMA Channel 6 Register Set */
+#define BCM283X_DMA7_BASE	(BCM283X_DMA_BASE + 0x700)	/* DMA Channel 7 Register Set */
+#define BCM283X_DMA8_BASE	(BCM283X_DMA_BASE + 0x800)	/* DMA Channel 8 Register Set */
+#define BCM283X_DMA9_BASE	(BCM283X_DMA_BASE + 0x900)	/* DMA Channel 9 Register Set */
+#define BCM283X_DMA10_BASE	(BCM283X_DMA_BASE + 0xA00)	/* DMA Channel 10 Register Set */
+#define BCM283X_DMA11_BASE	(BCM283X_DMA_BASE + 0xB00)	/* DMA Channel 11 Register Set */
+#define BCM283X_DMA12_BASE	(BCM283X_DMA_BASE + 0xC00)	/* DMA Channel 12 Register Set */
+#define BCM283X_DMA13_BASE	(BCM283X_DMA_BASE + 0xD00)	/* DMA Channel 13 Register Set */
+#define BCM283X_DMA14_BASE	(BCM283X_DMA_BASE + 0xE00)	/* DMA Channel 14 Register Set */
+#define BCM283X_DMA_INT_STATUS	(BCM283X_DMA_BASE + 0xFE0)	/* Interrupt Status of each DMA Channel */
+#define BCM283X_DMA_ENABLE	(BCM283X_DMA_BASE + 0xFF0)	/* Global Enable bits for each DMA Channel */
+#define BCM283X_DMA15_BASE (BCM283X_PER_BASE + 0xE05000)	/* DMA Channel 15 Register Set */
+
+#define BCM283X_DMA_CS		0x00	/* DMA Channel 0..14 Control & Status */
+#define BCM283X_DMA_CONBLK_AD	0x04	/* DMA Channel 0..14 Control Block Address */
+#define BCM283X_DMA_TI		0x08	/* DMA Channel 0..14 CB Word 0 (Transfer Information) */
+#define BCM283X_DMA_SOURCE_AD	0x0C	/* DMA Channel 0..14 CB Word 1 (Source Address) */
+#define BCM283X_DMA_DEST_AD	0x10	/* DMA Channel 0..14 CB Word 2 (Destination Address) */
+#define BCM283X_DMA_TXFR_LEN	0x14	/* DMA Channel 0..14 CB Word 3 (Transfer Length) */
+#define BCM283X_DMA_STRIDE	0x18	/* DMA Channel 0..14 CB Word 4 (2D Stride) */
+#define BCM283X_DMA_NEXTCONBK	0x1C	/* DMA Channel 0..14 CB Word 5 (Next CB Address) */
+#define BCM283X_DMA_DEBUG	0x20	/* DMA Channel 0..14 Debug */
+
+/*
+ *  Random Number Generator(RNG)
  */
 #define BCM283X_RNG_BASE	(BCM283X_PER_BASE + 0x104000)
 #define BCM283X_RNG_CTRL	(BCM283X_RNG_BASE + 0x0)
@@ -168,7 +201,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_RNG_DATA	(BCM283X_RNG_BASE + 0x8)
 
 /*
- * Mailbox
+ *  Mailbox
  */
 #define BCM283X_MAIL_BASE	(BCM283X_PER_BASE + 0xB880)	/* Mailbox Base Address */
 #define BCM283X_MAIL_READ	(BCM283X_MAIL_BASE + 0x00)	/* Mailbox Read Register */
@@ -266,6 +299,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_PCM_INTEN_A	(BCM283X_PCM_BASE + 0x18)	/* PCM Interrupt Enables */
 #define BCM283X_PCM_INTSTC_A	(BCM283X_PCM_BASE + 0x1C)	/* PCM Interrupt Status & Clear */
 #define BCM283X_PCM_GRAY	(BCM283X_PCM_BASE + 0x20)	/* PCM Gray Mode Control */
+
+/*
+ *  PWM
+ */
+#define BCM283X_PWM_BASE (BCM283X_PER_BASE + 0x20C000)
+#define BCM283X_PWM_CTL		(BCM283X_PWM_BASE + 0x00)	/* PWM Control */
+#define BCM283X_PWM_STA		(BCM283X_PWM_BASE + 0x04)	/* PWM Status */
+#define BCM283X_PWM_DMAC	(BCM283X_PWM_BASE + 0x08)	/* PWM DMA Configuration */
+#define BCM283X_PWM_RNG1	(BCM283X_PWM_BASE + 0x10)	/* PWM Channel 1 Range */
+#define BCM283X_PWM_DAT1	(BCM283X_PWM_BASE + 0x14)	/* PWM Channel 1 Data */
+#define BCM283X_PWM_FIF1	(BCM283X_PWM_BASE + 0x18)	/* PWM FIFO Input */
+#define BCM283X_PWM_RNG2	(BCM283X_PWM_BASE + 0x20)	/* PWM Channel 2 Range */
+#define BCM283X_PWM_DAT2	(BCM283X_PWM_BASE + 0x24)	/* PWM Channel 2 Data */
 
 /*
  *  System Timer
@@ -403,12 +449,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 //-------------------------------------------------------------------------
 
-#ifndef AZO_MACRO_ONLY
+#ifndef AZO_ASSEMBLY
 
 //-------------------------------------------------------------------------
+typedef char		  int8_t;
 typedef unsigned char	 uint8_t;
+typedef short		 int16_t;
 typedef unsigned short	uint16_t;
-typedef unsigned int	uint32_t;
+typedef long		 int32_t;
+typedef unsigned long	uint32_t;
 typedef unsigned int	intptr_t;
 
 extern void dummy(void);
@@ -440,6 +489,62 @@ extern void arm_data_memorybarrier(void);
 extern void arm_instruction_syncbarrier(void);
 extern void arm_drain_write_buffer(void);
 
+extern uint32_t azo_uint32_div(uint32_t val, uint32_t div);
+extern uint32_t azo_uint32_mod(uint32_t val, uint32_t div);
+extern uint32_t bcm283x_get_cpuclock_med(uint32_t count);
+
+//-------------------------------------------------------------------------
+/* DMA Control Block */
+/*
+	DMA Transfer Information.
+
+	bit26 : NO_WIDE_BURSTS : Don t Do wide writes as a 2 beat burst
+	bit25:21 : WAITS : Add Wait Cycles
+	bit20:16 : PERMAP : Peripheral Mapping
+	bit15:12 : BURST_LENGTH : Burst Transfer Length
+	bit11 : SRC_IGNORE : Ignore Reads
+	bit10 : SRC_DREQ : Control Source Reads with DREQ
+	bit 9 : SRC_WIDTH : Source Transfer Width
+		1 = Use 128-bit source read width.
+		0 = Use 32-bit source read width.
+	bit 8 : SRC_INC : Source Address Increment
+		1 = Source address increments after each read. The
+		    address will increment by 4, if S_WIDTH=0 else by 32.
+		0 = Source address does not change.
+	bit 7 : DEST_IGNORE : Ignore Writes
+	bit 6 : DEST_DREQ : Control Destination Writes with DREQ
+	bit 5 : DEST_WIDTH : Destination Transfer Width
+		1 = Use 128-bit destination write width.
+		0 = Use 32-bit destination write width.
+	bit 4 : DEST_INC : Destination Address Increment
+		1 = Destination address increments after each write The address will increment by 4,
+		    if DEST_WIDTH=0 else by 32.
+		0 = Destination address does not change.
+	bit 3 : WAIT_RESP : Wait for a Write Response
+	bit 1 : TDMODE : 2D Mode
+		1 = 2D mode interpret the TXFR_LEN register as
+		    YLENGTH number of transfers each of XLENGTH, and
+		    add the strides to the address after each transfer.
+		0 = Linear mode interpret the TXFR register as a single
+		    transfer of total length {YLENGTH ,XLENGTH}.
+	bit 0 : INTEN : Interrupt Enable
+*/
+typedef struct bcm283x_dma_cb {
+	uint32_t transfer_information;
+	uint32_t src_address;
+	uint32_t dst_address;
+	uint32_t length;
+	uint32_t tdmode_stride;
+	uint32_t next_control_block_address;
+	uint32_t reserved1;
+	uint32_t reserved2;
+} bcm283x_dma_cb_t;
+
+//-------------------------------------------------------------------------
+#define ARMTOVC_RAM_ADDRESS(a) ((uint32_t)(a) + 0xC0000000)
+#define VCTOARM_RAM_ADDRESS(a) ((uint32_t)(a) - 0xC0000000)
+#define ARMTOVC_PER_ADDRESS(a) ((uint32_t)(a) - BCM283X_PER_BASE + 0x7E000000)
+
 //-------------------------------------------------------------------------
 inline unsigned int GET32(const unsigned int addr) {
 	return *(volatile unsigned int*)addr;
@@ -450,6 +555,6 @@ inline void PUT32(const unsigned int addr, const unsigned int val) {
 	*(volatile unsigned int*)addr = val;
 }
 
-#endif	/* AZO_MACRO_ONLY */
+#endif	/* AZO_ASSEMBLY */
 #endif	/* RP_BAREMETAL_H */
 
