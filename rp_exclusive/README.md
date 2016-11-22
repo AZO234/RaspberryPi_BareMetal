@@ -3,7 +3,7 @@ CPU core exclusive sample
 
 This is CPU core exclusive sample code.  
 
-This sample use UART 115200/8/N/1.
+This sample use UART 115200/8/N/1.  
 Connect follow pins to PC.  
 * pin 6 GND  
 * Pin 8 TXD(GPIO14/ALT5)  

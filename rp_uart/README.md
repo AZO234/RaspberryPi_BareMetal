@@ -4,6 +4,7 @@ UART sample
 This is Auxiliary UART(UART1) sample code.  
 (UART0 is used Bluetooth in RP3)  
 
+This sample use UART 115200/8/N/1.  
 Connect follow pins to PC.  
 * pin 6 GND  
 * Pin 8 TXD(GPIO14/ALT5)  
