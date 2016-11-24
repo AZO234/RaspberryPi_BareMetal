@@ -284,6 +284,8 @@ void pwm_raw_play(azo_rawpwmdata_t* rawdata) {
 			PUT32(BCM283X_DMA0_BASE + BCM283X_DMA_CS, 0x1);
 			/* wait DMA transfer end */
 			while((GET32(BCM283X_DMA0_BASE + BCM283X_DMA_CS) & 0x2) == 0);
+			/* clear end */
+			PUT32(BCM283X_DMA0_BASE + BCM283X_DMA_CS, 0x2);
 		}
 	} else {
 		/* DMA activate */
