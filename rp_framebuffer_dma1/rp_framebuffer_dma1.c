@@ -161,7 +161,7 @@ void* bcm283x_display_init(bcm283x_display_config_t* config) {
 		locate++;
 		armtovc[locate] = config->size_x;	/* Value Buffer */
 		locate++;
-		armtovc[locate] = config->size_y;	/* Value Buffer */
+		armtovc[locate] = config->size_y * 2;	/* Value Buffer */
 		locate++;
 
 		armtovc[locate] = BCM283X_TAGS_SET_DEPTH;	/* Tag Identifier */
@@ -179,9 +179,9 @@ void* bcm283x_display_init(bcm283x_display_config_t* config) {
 		locate++;
 		armtovc[locate] = 0x00000008;	/* 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes */
 		locate++;
-		armtovc[locate] = config->offset_x;	/* Value Buffer */
+		armtovc[locate] = 0;	/* Value Buffer */
 		locate++;
-		armtovc[locate] = config->offset_y;	/* Value Buffer */
+		armtovc[locate] = 0;	/* Value Buffer */
 		locate++;
 
 		if(config->palette_count != 0 && config->palette != (uint32_t*)0) {
@@ -222,12 +222,15 @@ void* bcm283x_display_init(bcm283x_display_config_t* config) {
 		armtovc[0] = locate * 4;
 
 		/* Mail Box Write */
-		PUT32(BCM283X_MAIL_WRITE + BCM283X_MAIL_TAGS, (uint32_t)armtovc + BCM283X_MAIL_TAGS);
+		PUT32(BCM283X_MAIL_WRITE, (uint32_t)armtovc + BCM283X_MAIL_TAGS);
 
-		for(i=0;i<1000;i++);
+		while((armtovc[1] & 0x80000000) == 0);
 
 		if(*fbp != 0) break;
 	}
+
+	while((BCM283X_MAIL_STATUS & BCM283X_MAIL_EMPTY) != 0);
+		GET32(BCM283X_MAIL_READ);
 
 	fb = (uint32_t*)(*(fbp) & 0x3FFFFFFF);	/* Convert Mail Box Frame Buffer Pointer From BUS Address To Physical Address ($CXXXXXXX -> $3XXXXXXX) */
 	*fbp = (uint32_t)fb;
@@ -236,8 +239,43 @@ void* bcm283x_display_init(bcm283x_display_config_t* config) {
 }
 
 //------------------------------------------------------------------------
+void bcm283x_display_setscreenno(const bcm283x_display_config_t* config, uint32_t screen_no) {
+	uint32_t locate = 1;
+
+	/* Sequence Of Concatenated Tags */
+	armtovc[locate] = 0x00000000;
+	locate++;
+
+	armtovc[locate] = BCM283X_TAGS_SET_VIRTUAL_OFFSET;	/* Tag Identifier */
+	locate++;
+	armtovc[locate] = 0x00000008;	/* Value Buffer Size In Bytes */
+	locate++;
+	armtovc[locate] = 0x00000008;	/* 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes */
+	locate++;
+	armtovc[locate] = 0;	/* Value Buffer */
+	locate++;
+	armtovc[locate] = config->size_y * screen_no;	/* Value Buffer */
+	locate++;
+
+	/* End Tag */
+	armtovc[locate] = 0;
+	locate++;
+	armtovc[locate] = 0;
+	locate++;
+
+	armtovc[0] = locate * 4;
+
+	/* Mail Box Write */
+	while(BCM283X_MAIL_STATUS & BCM283X_MAIL_FULL);
+	PUT32(BCM283X_MAIL_WRITE, (uint32_t)armtovc + BCM283X_MAIL_TAGS);
+	while((armtovc[1] & 0x80000000) == 0);
+	while((BCM283X_MAIL_STATUS & BCM283X_MAIL_EMPTY) != 0);
+		GET32(BCM283X_MAIL_READ);
+}
+
+//------------------------------------------------------------------------
 void draw05(uint32_t* fb) {
-	uint32_t x,y;
+	uint32_t x, y;
 	uint32_t c;
 
 	/* ARIB STD-B28 */
@@ -444,6 +482,7 @@ int notmain ( unsigned int earlypc )
 	uint32_t fcount, pretime, currenttime;
 	uint8_t* fb;
 	bcm283x_display_config_t config = {1920, 1080, 32, 0, 0, 0, (uint32_t*)0};
+	uint32_t screen_no = 0;
 
 	uart_init();
 	fb = bcm283x_display_init(&config);
@@ -455,7 +494,6 @@ int notmain ( unsigned int earlypc )
 	PUT32(BCM283X_DMA_ENABLE, 0x1);
 	/* DMA Control Block */
 	dma_cb_data.transfer_information = 0x332;	/* Source Address Increment 32, Destination Address Increment 32, 2D Mode */
-	dma_cb_data.dst_address = (uint32_t)fb;
 	dma_cb_data.length = (1080 << 16) + (1920 * 4); /* 0:15 XLENGTH, 16:29 YLENGTH */
 	dma_cb_data.tdmode_stride = 0;
 	dma_cb_data.next_control_block_address = 0;
@@ -492,6 +530,14 @@ int notmain ( unsigned int earlypc )
 
 		/* DMA src set */
 		dma_cb_data.src_address = (uint32_t)my_fb1 + ((cy * 1920 + cx) << 2);
+		/* DMA dest set */
+		if(screen_no == 0) {
+			/* write to screen 1 */
+			dma_cb_data.dst_address = (uint32_t)fb + 1920*1080*4;
+		} else {
+			/* write to screen 0 */
+			dma_cb_data.dst_address = (uint32_t)fb;
+		}
 		/* DMA set CB */
 		PUT32(BCM283X_DMA0_BASE + BCM283X_DMA_CONBLK_AD, (uint32_t)&(dma_cb_data));
 		/* DMA activate */
@@ -501,6 +547,17 @@ int notmain ( unsigned int earlypc )
 		while((GET32(BCM283X_DMA0_BASE + BCM283X_DMA_CS) & 0x2) == 0);
 		/* clear end */
 		PUT32(BCM283X_DMA0_BASE + BCM283X_DMA_CS, 0x2);
+
+		/* flip screen */
+		if(screen_no == 0) {
+			/* screen 1 */
+			bcm283x_display_setscreenno(&config, 1);
+			screen_no = 1;
+		} else {
+			/* screen 0 */
+			bcm283x_display_setscreenno(&config, 0);
+			screen_no = 0;
+		}
 
 		fcount++;
 	}

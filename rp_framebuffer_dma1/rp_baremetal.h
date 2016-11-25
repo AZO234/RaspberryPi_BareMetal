@@ -542,7 +542,7 @@ typedef struct bcm283x_dma_cb {
 
 //-------------------------------------------------------------------------
 #define ARMTOVC_RAM_ADDRESS(a) ((uint32_t)(a) + 0xC0000000)
-#define VCTOARM_RAM_ADDRESS(a) ((uint32_t)(a) & 0x3FFFFFFF)
+#define VCTOARM_RAM_ADDRESS(a) ((uint32_t)(a) - 0xC0000000)
 #define ARMTOVC_PER_ADDRESS(a) ((uint32_t)(a) - BCM283X_PER_BASE + 0x7E000000)
 
 //-------------------------------------------------------------------------
