@@ -103,12 +103,21 @@ void pwm_init(const uint32_t samplerate) {
 	}
 
 	/* GPIO setting */
+#ifdef AZO_BOARD_RPZERO
+	value = GET32(BCM283X_GPIO_GPFSEL1);
+	value &= ~(7 <<  6); /* GPIO12 */
+	value |=   4 <<  6 ; /* ALT0 */
+	value &= ~(7 <<  9); /* GPIO13 */
+	value |=   4 <<  9 ; /* ALT0 */
+	PUT32(BCM283X_GPIO_GPFSEL1, value);
+#else
 	value = GET32(BCM283X_GPIO_GPFSEL4);
 	value &= ~(7 <<  0); /* GPIO40 */
 	value |=   4 <<  0 ; /* ALT0 */
 	value &= ~(7 << 15); /* GPIO45 */
 	value |=   4 << 15 ; /* ALT0 */
 	PUT32(BCM283X_GPIO_GPFSEL4, value);
+#endif /* AZO_BOARD_RPZERO */
 
 	/* Clock setting 250MHz */
 	PUT32(BCM283X_CM_PWMDIV, BCM283X_CM_PASSWORD + 0x2000);	/* Div by 2 */
