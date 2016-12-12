@@ -414,8 +414,8 @@ int notmain(unsigned int earlypc)
 
 	while(1) {
 		putsnl(str3);
-		putsnl(str2);
 		while(uart_getc() != 0x20);
+		putsnl(str2);
 
 		for(loc = 0; loc < BUFFERLEN; loc += azo_uint32_div(recdata.samplerate, 48000) * 8) {
 			/* FIFO full wait */
