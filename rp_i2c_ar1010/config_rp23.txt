@@ -1,0 +1,8 @@
+kernel_old=1
+disable_commandline_tags=1
+disable_overscan=1
+framebuffer_swap=0
+hdmi_drive=2
+hdmi_group=2
+hdmi_mode=82
+
