@@ -959,7 +959,7 @@ azo_uint32_div_1:
 	tst r3, #0x80000000
 	bne azo_uint32_div_2
 	cmp r3, r0
-	blo azo_uint32_div_1
+	bls azo_uint32_div_1
 	lsr r2, r2, #1
 	mul r3, r1, r2
 azo_uint32_div_2:
@@ -1219,56 +1219,4 @@ bcm283x_get_cpuclock_med_12:
 	lslne r0, r0, #6		;@ x64
 	pop {r4-r11, lr}
 	bx lr
-
-;@-------------------------------------------------------------------------
-.text
-	.globl core0stop
-core0stop:
-    ldr r1, =corestopper0
-    dmb
-    dsb
-    ldr r0, [r1]
-    ldr r1, =0x12345678
-    cmp r0, r1
-    bne core0stop
-    bx lr
-
-;@-------------------------------------------------------------------------
-.text
-	.globl core1stop
-core1stop:
-    ldr r1, =corestopper1
-    dmb
-    dsb
-    ldr r0, [r1]
-    ldr r1, =0x12345678
-    cmp r0, r1
-    bne core1stop
-    bx lr
-
-;@-------------------------------------------------------------------------
-.text
-	.globl core2stop
-core2stop:
-    ldr r1, =corestopper2
-    dmb
-    dsb
-    ldr r0, [r1]
-    ldr r1, =0x12345678
-    cmp r0, r1
-    bne core2stop
-    bx lr
-
-;@-------------------------------------------------------------------------
-.text
-	.globl core3stop
-core3stop:
-    ldr r1, =corestopper3
-    dmb
-    dsb
-    ldr r0, [r1]
-    ldr r1, =0x12345678
-    cmp r0, r1
-    bne core3stop
-    bx lr
 

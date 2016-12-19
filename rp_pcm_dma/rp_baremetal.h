@@ -29,6 +29,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *  GPIO
  */
 #define BCM283X_GPIO_BASE (BCM283X_PER_BASE + 0x200000)
+#define BCM283X_GPIO_GPFSEL0	(BCM283X_GPIO_BASE + 0x00)	/* GPIO Function Select 0 32bit R/W */
 #define BCM283X_GPIO_GPFSEL1	(BCM283X_GPIO_BASE + 0x04)	/* GPIO Function Select 1 32bit R/W */
 #define BCM283X_GPIO_GPFSEL2	(BCM283X_GPIO_BASE + 0x08)	/* GPIO Function Select 2 32bit R/W */
 #define BCM283X_GPIO_GPFSEL4	(BCM283X_GPIO_BASE + 0x10)	/* GPIO Function Select 4 32bit R/W */
@@ -37,6 +38,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_GPIO_GPPUD	(BCM283X_GPIO_BASE + 0x94)	/* GPIO Pin Pull-up/down Enable */
 #define BCM283X_GPIO_GPPUDCLK0	(BCM283X_GPIO_BASE + 0x98)	/* GPIO Pin Pull-up/down Enable Clock 0 */
 #define BCM283X_GPIO_GPPUDCLK1	(BCM283X_GPIO_BASE + 0x9C)	/* GPIO Pin Pull-up/down Enable Clock 1 */
+
+/*
+ *  BSC/I2C
+ */
+#define BCM283X_I2C0_BASE (BCM283X_PER_BASE + 0x205000)	/* (non pin out) */
+#define BCM283X_I2C1_BASE (BCM283X_PER_BASE + 0x804000)
+#define BCM283X_I2C2_BASE (BCM283X_PER_BASE + 0x805000)	/* (used dedicated with the HDMI interface) */
+#define BCM283X_I2C_C		0x00	/* Control */
+#define BCM283X_I2C_S		0x04	/* Status */
+#define BCM283X_I2C_DLEN	0x08	/* Data Length */
+#define BCM283X_I2C_A		0x0C	/* Slave Address */
+#define BCM283X_I2C_FIFO	0x10	/* Data FIFO */
+#define BCM283X_I2C_DIV		0x14	/* Clock Divider */
+#define BCM283X_I2C_DEL		0x18	/* Data Delay */
+#define BCM283X_I2C_CLKT	0x1C	/* Clock Stretch Timeout */
 
 /*
  *  Clock manager
@@ -193,7 +209,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_DMA_DEBUG	0x20	/* DMA Channel 0..14 Debug */
 
 /*
- * Random Number Generator(RNG)
+ *  Random Number Generator(RNG)
  */
 #define BCM283X_RNG_BASE	(BCM283X_PER_BASE + 0x104000)
 #define BCM283X_RNG_CTRL	(BCM283X_RNG_BASE + 0x0)
@@ -201,7 +217,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_RNG_DATA	(BCM283X_RNG_BASE + 0x8)
 
 /*
- * Mailbox
+ *  Mailbox
  */
 #define BCM283X_MAIL_BASE	(BCM283X_PER_BASE + 0xB880)	/* Mailbox Base Address */
 #define BCM283X_MAIL_READ	(BCM283X_MAIL_BASE + 0x00)	/* Mailbox Read Register */
@@ -299,6 +315,19 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_PCM_INTEN_A	(BCM283X_PCM_BASE + 0x18)	/* PCM Interrupt Enables */
 #define BCM283X_PCM_INTSTC_A	(BCM283X_PCM_BASE + 0x1C)	/* PCM Interrupt Status & Clear */
 #define BCM283X_PCM_GRAY	(BCM283X_PCM_BASE + 0x20)	/* PCM Gray Mode Control */
+
+/*
+ *  PWM
+ */
+#define BCM283X_PWM_BASE (BCM283X_PER_BASE + 0x20C000)
+#define BCM283X_PWM_CTL		(BCM283X_PWM_BASE + 0x00)	/* PWM Control */
+#define BCM283X_PWM_STA		(BCM283X_PWM_BASE + 0x04)	/* PWM Status */
+#define BCM283X_PWM_DMAC	(BCM283X_PWM_BASE + 0x08)	/* PWM DMA Configuration */
+#define BCM283X_PWM_RNG1	(BCM283X_PWM_BASE + 0x10)	/* PWM Channel 1 Range */
+#define BCM283X_PWM_DAT1	(BCM283X_PWM_BASE + 0x14)	/* PWM Channel 1 Data */
+#define BCM283X_PWM_FIF1	(BCM283X_PWM_BASE + 0x18)	/* PWM FIFO Input */
+#define BCM283X_PWM_RNG2	(BCM283X_PWM_BASE + 0x20)	/* PWM Channel 2 Range */
+#define BCM283X_PWM_DAT2	(BCM283X_PWM_BASE + 0x24)	/* PWM Channel 2 Data */
 
 /*
  *  System Timer
@@ -445,6 +474,8 @@ typedef short		 int16_t;
 typedef unsigned short	uint16_t;
 typedef long		 int32_t;
 typedef unsigned long	uint32_t;
+typedef long		 int_t;
+typedef unsigned long	uint_t;
 typedef unsigned int	intptr_t;
 
 extern void dummy(void);

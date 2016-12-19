@@ -29,6 +29,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *  GPIO
  */
 #define BCM283X_GPIO_BASE (BCM283X_PER_BASE + 0x200000)
+#define BCM283X_GPIO_GPFSEL0	(BCM283X_GPIO_BASE + 0x00)	/* GPIO Function Select 0 32bit R/W */
 #define BCM283X_GPIO_GPFSEL1	(BCM283X_GPIO_BASE + 0x04)	/* GPIO Function Select 1 32bit R/W */
 #define BCM283X_GPIO_GPFSEL2	(BCM283X_GPIO_BASE + 0x08)	/* GPIO Function Select 2 32bit R/W */
 #define BCM283X_GPIO_GPFSEL4	(BCM283X_GPIO_BASE + 0x10)	/* GPIO Function Select 4 32bit R/W */
@@ -37,6 +38,21 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define BCM283X_GPIO_GPPUD	(BCM283X_GPIO_BASE + 0x94)	/* GPIO Pin Pull-up/down Enable */
 #define BCM283X_GPIO_GPPUDCLK0	(BCM283X_GPIO_BASE + 0x98)	/* GPIO Pin Pull-up/down Enable Clock 0 */
 #define BCM283X_GPIO_GPPUDCLK1	(BCM283X_GPIO_BASE + 0x9C)	/* GPIO Pin Pull-up/down Enable Clock 1 */
+
+/*
+ *  BSC/I2C
+ */
+#define BCM283X_I2C0_BASE (BCM283X_PER_BASE + 0x205000)	/* (non pin out) */
+#define BCM283X_I2C1_BASE (BCM283X_PER_BASE + 0x804000)
+#define BCM283X_I2C2_BASE (BCM283X_PER_BASE + 0x805000)	/* (used dedicated with the HDMI interface) */
+#define BCM283X_I2C_C		0x00	/* Control */
+#define BCM283X_I2C_S		0x04	/* Status */
+#define BCM283X_I2C_DLEN	0x08	/* Data Length */
+#define BCM283X_I2C_A		0x0C	/* Slave Address */
+#define BCM283X_I2C_FIFO	0x10	/* Data FIFO */
+#define BCM283X_I2C_DIV		0x14	/* Clock Divider */
+#define BCM283X_I2C_DEL		0x18	/* Data Delay */
+#define BCM283X_I2C_CLKT	0x1C	/* Clock Stretch Timeout */
 
 /*
  *  Clock manager
@@ -458,6 +474,8 @@ typedef short		 int16_t;
 typedef unsigned short	uint16_t;
 typedef long		 int32_t;
 typedef unsigned long	uint32_t;
+typedef long		 int_t;
+typedef unsigned long	uint_t;
 typedef unsigned int	intptr_t;
 
 extern void dummy(void);

@@ -959,7 +959,7 @@ azo_uint32_div_1:
 	tst r3, #0x80000000
 	bne azo_uint32_div_2
 	cmp r3, r0
-	blo azo_uint32_div_1
+	bls azo_uint32_div_1
 	lsr r2, r2, #1
 	mul r3, r1, r2
 azo_uint32_div_2:
