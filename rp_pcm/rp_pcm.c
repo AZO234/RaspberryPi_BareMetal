@@ -27,6 +27,7 @@ typedef struct azo_pcmdata {
 	uint32_t size;
 	uint32_t channels;
 	uint32_t samplerate;
+	uint32_t mclk;
 	uint32_t bitswidth;
 	uint32_t loopcount;
 	uint32_t endless;
@@ -475,6 +476,7 @@ void pcm_init(const uint32_t samplerate, const uint32_t bitswidth) {
 	/* TXCLR + SYNC and wait */
 	while(GET32(BCM283X_PCM_CS_A) & ((1 << 3) | (1 << 24)));
 }
+
 //------------------------------------------------------------------------
 void pcm_play(azo_pcmdata_t* pcmdata) {
 	uint32_t loc;
@@ -535,6 +537,122 @@ void pcm_play(azo_pcmdata_t* pcmdata) {
 		}
 	} while(pcmdata->endless);
 }
+
+//------------------------------------------------------------------------
+void mclk_init(const uint32_t mclk) {
+	uint32_t ra;
+
+	/* GPIO function set */
+	ra = GET32(BCM283X_GPIO_GPFSEL0);
+	ra &= ~(7<<12); /* GPIO4 GPCLK0 */
+	ra |=   4<<12 ; /* ALT0 */
+	PUT32(BCM283X_GPIO_GPFSEL0, ra);
+
+	/* PullUD disable */
+	PUT32(BCM283X_GPIO_GPPUD, 0);		/* disable pullUD */
+	for(ra = 0; ra < 150; ra++) dummy();	/* wait 150 cycles */
+	PUT32(BCM283X_GPIO_GPPUDCLK0, 1 << 4);	/* GPIO4 pullUD disable */
+	for(ra = 0; ra < 150; ra++) dummy();	/* wait 150 cycles */
+	PUT32(BCM283X_GPIO_GPPUDCLK0, 0);	/* remove the clock */
+
+	/* Clock setting */
+	/*
+		0: GND
+		1: oscillator 19.2 MHz
+		2: testdebug0
+		3: testdebug1
+		4: PLLA 650 MHz per
+		*: PLLB 400 MHz
+		5: PLLC 200 MHz per (changes with overclock settings to 1000 MHz)
+		6: PLLD 500 MHz per
+		7: HDMI auxiliary 216 MHz
+
+		GPCLK0, GPCLK1, and GPCLK2.
+		Don't use GPCLK1 (it's probably used for the Ethernet clock).
+	*/
+	/* GP0CLK  8.1920MHz: PLLD 500 MHz /  8.1920MHz = 61.0351 : I = 61 : F = (0.0351 * 4096) =  143 */
+	/* GP0CLK 11.2896MHz: PLLD 500 MHz / 11.2896MHz = 44.2885 : I = 44 : F = (0.2885 * 4096) = 1181 */
+	/* GP0CLK 12.2880MHz: PLLD 500 MHz / 12.2880MHz = 40.6901 : I = 40 : F = (0.6901 * 4096) = 2826 */
+	/* GP0CLK 16.3840MHz: PLLD 500 MHz / 16.3840MHz = 30.5175 : I = 30 : F = (0.5175 * 4096) = 2119 */
+	/* GP0CLK 16.9344MHz: PLLD 500 MHz / 16.9344MHz = 29.5256 : I = 29 : F = (0.5256 * 4096) = 2152 */
+	/* GP0CLK 18.4320MHz: PLLD 500 MHz / 18.4320MHz = 27.1267 : I = 27 : F = (0.1267 * 4096) =  518 */
+	/* GP0CLK 22.5792MHz: PLLD 500 MHz / 22.5792MHz = 22.1442 : I = 22 : F = (0.1442 * 4096) =  590 */
+	/* GP0CLK 24.5760MHz: PLLD 500 MHz / 24.5760MHz = 20.3450 : I = 20 : F = (0.3450 * 4096) = 1413 */
+	/* GP0CLK 32.7680MHz: PLLD 500 MHz / 32.7680MHz = 15.2587 : I = 15 : F = (0.2587 * 4096) = 1059 */
+	/* GP0CLK 33.8688MHz: PLLD 500 MHz / 33.8688MHz = 14.7628 : I = 14 : F = (0.7628 * 4096) = 3124 */
+	/* GP0CLK 36.8640MHz: PLLD 500 MHz / 36.8640MHz = 13.5633 : I = 13 : F = (0.5633 * 4096) = 2307 */
+	/* GP0CLK 45.1584MHz: PLLD 500 MHz / 45.1584MHz = 11.0721 : I = 11 : F = (0.0721 * 4096) =  295 */
+	/* GP0CLK 49.1520MHz: PLLD 500 MHz / 49.1520MHz = 10.1725 : I = 10 : F = (0.1725 * 4096) =  706 */
+
+	switch(mclk) {
+	case 8192000:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x3D08F);	/* Div by I=61:F= 143 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 11289600:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x2C49D);	/* Div by I=44:F=1181 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 12288000:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x28B0A);	/* Div by I=40:F=2826 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 16384000:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x1E847);	/* Div by I=30:F=2119 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 16934400:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x1D868);	/* Div by I=29:F=2152 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 18432000:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x1B206);	/* Div by I=27:F= 518 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 22579200:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x1624E);	/* Div by I=22:F= 590 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 24576000:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x14585);	/* Div by I=20:F=1413 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 32768000:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD +  0xF423);	/* Div by I=15:F=1059 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 33868800:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD +  0xEC34);	/* Div by I=14:F=3124 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 36864000:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD +  0xD903);	/* Div by I=13:F=2307 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 45158400:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD +  0xB127);	/* Div by I=11:F= 295 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	case 49152000:
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
+		PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD +  0xA2C2);	/* Div by I=10:F= 706 */
+		PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+		break;
+	}
+}
+
 //------------------------------------------------------------------------
 int notmain(unsigned int earlypc)
 {
@@ -542,6 +660,7 @@ int notmain(unsigned int earlypc)
 		96,
 		1,
 		48000,
+		49152000,
 		16,
 		1,
 		1,
@@ -552,6 +671,7 @@ int notmain(unsigned int earlypc)
 		192,
 		1,
 		48000,
+		49152000,
 		32,
 		1,
 		1,
@@ -562,6 +682,7 @@ int notmain(unsigned int earlypc)
 		384,
 		1,
 		96000,
+		49152000,
 		32,
 		1,
 		1,
@@ -572,6 +693,7 @@ int notmain(unsigned int earlypc)
 		768,
 		1,
 		384000,
+		36864000,
 		16,
 		1,
 		1,
@@ -582,6 +704,7 @@ int notmain(unsigned int earlypc)
 		1536,
 		1,
 		384000,
+		36864000,
 		32,
 		1,
 		1,
@@ -592,6 +715,7 @@ int notmain(unsigned int earlypc)
 		576,
 		1,
 		192000,
+		49152000,
 		24,
 		1,
 		1,
@@ -602,6 +726,7 @@ int notmain(unsigned int earlypc)
 		288,
 		1,
 		96000,
+		49152000,
 		24,
 		1,
 		1,
@@ -610,6 +735,7 @@ int notmain(unsigned int earlypc)
 */
 
 	pcm_init(pcmdata.samplerate, pcmdata.bitswidth); 
+	mclk_init(pcmdata.mclk);
 	pcm_play(&pcmdata);
 
 	while(1);

@@ -63,17 +63,27 @@ int notmain(unsigned int earlypc) {
 		GPCLK0, GPCLK1, and GPCLK2.
 		Don't use GPCLK1 (it's probably used for the Ethernet clock).
 	*/
-	/* GP0CLK 24.576MHz: PLLD 500 MHz / 24.576MHz = 20.345 : I = 20 : F = (0.345 * 4096) = 1413 */
-	/* GP1CLK 24.576MHz: PLLD 500 MHz / 24.576MHz = 20.345 : I = 20 : F = (0.345 * 4096) = 1413 */
-	/* GP2CLK 24.576MHz: PLLD 500 MHz / 24.576MHz = 20.345 : I = 20 : F = (0.345 * 4096) = 1413 */
+	/* GPnCLK  8.1920MHz: PLLD 500 MHz /  8.1920MHz = 61.0351 : I = 61 : F = (0.0351 * 4096) =  143 */
+	/* GPnCLK 11.2896MHz: PLLD 500 MHz / 11.2896MHz = 44.2885 : I = 44 : F = (0.2885 * 4096) = 1181 */
+	/* GPnCLK 12.2880MHz: PLLD 500 MHz / 12.2880MHz = 40.6901 : I = 40 : F = (0.6901 * 4096) = 2826 */
+	/* GPnCLK 16.3840MHz: PLLD 500 MHz / 16.3840MHz = 30.5175 : I = 30 : F = (0.5175 * 4096) = 2119 */
+	/* GPnCLK 16.9344MHz: PLLD 500 MHz / 16.9344MHz = 29.5256 : I = 29 : F = (0.5256 * 4096) = 2152 */
+	/* GPnCLK 18.4320MHz: PLLD 500 MHz / 18.4320MHz = 27.1267 : I = 27 : F = (0.1267 * 4096) =  518 */
+	/* GPnCLK 22.5792MHz: PLLD 500 MHz / 22.5792MHz = 22.1442 : I = 22 : F = (0.1442 * 4096) =  590 */
+	/* GPnCLK 24.5760MHz: PLLD 500 MHz / 24.5760MHz = 20.3450 : I = 20 : F = (0.3450 * 4096) = 1413 */
+	/* GPnCLK 32.7680MHz: PLLD 500 MHz / 32.7680MHz = 15.2587 : I = 15 : F = (0.2587 * 4096) = 1059 */
+	/* GPnCLK 33.8688MHz: PLLD 500 MHz / 33.8688MHz = 14.7628 : I = 14 : F = (0.7628 * 4096) = 3124 */
+	/* GPnCLK 36.8640MHz: PLLD 500 MHz / 36.8640MHz = 13.5633 : I = 13 : F = (0.5633 * 4096) = 2307 */
+	/* GPnCLK 45.1584MHz: PLLD 500 MHz / 45.1584MHz = 11.0721 : I = 11 : F = (0.0721 * 4096) =  295 */
+	/* GPnCLK 49.1520MHz: PLLD 500 MHz / 49.1520MHz = 10.1725 : I = 10 : F = (0.1725 * 4096) =  706 */
+
+	/* GP0CLK 24.5760MHz */
 	PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
 	PUT32(BCM283X_CM_GP0DIV, BCM283X_CM_PASSWORD + 0x14585);	/* Div by I=20:F=1413 */
 	PUT32(BCM283X_CM_GP0CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
-	PUT32(BCM283X_CM_GP1CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
-	PUT32(BCM283X_CM_GP1DIV, BCM283X_CM_PASSWORD + 0x14585);	/* Div by I=20:F=1413 */
-	PUT32(BCM283X_CM_GP1CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
+	/* GP2CLK 22.5792MHz */
 	PUT32(BCM283X_CM_GP2CTL, BCM283X_CM_PASSWORD +  0x26);		/* Disable Clock Generator, oscillator */
-	PUT32(BCM283X_CM_GP2DIV, BCM283X_CM_PASSWORD + 0x14585);	/* Div by I=20:F=1413 */
+	PUT32(BCM283X_CM_GP2DIV, BCM283X_CM_PASSWORD + 0x161FD);	/* Div by I=22:F= 590 */
 	PUT32(BCM283X_CM_GP2CTL, BCM283X_CM_PASSWORD + 0x216);		/* Enable Clock Generator, 1stage MASH, PLLD */
 
 	while(1);
