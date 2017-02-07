@@ -5,11 +5,12 @@ Clock generator sample code.
 
 Connect follow pins to external devices.  
 * pin 7 GPCLK0(GPIO4/ALT0)  
-* pin29 GPCLK1(GPIO5/ALT0)  
 * pin31 GPCLK2(GPIO6/ALT0)  
 
 If you can run this program,  
 RPi can supply clock to external device.  
+
+Don't use GPCLK1 (it's probably used for the Ethernet clock).  
 
 -----
 

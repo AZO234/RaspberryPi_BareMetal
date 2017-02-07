@@ -6,6 +6,7 @@ This is PCM/I2S with DMA sample code.
 You need any external I2S DAC board.  
 
 Connect I2S DAC board to below pins.  
+* pin 7 - GPCLK0   (GPIO04/ALT0), MCLK/SCLK  
 * pin12 - PCM_CLK  (GPIO18/ALT0), BCK/BCLK/BITCLK  
 * pin35 - PCM_FR   (GPIO19/ALT0), LRCK  
 * pin40 - PCM_DOUT (GPIO21/ALT0), Data  
