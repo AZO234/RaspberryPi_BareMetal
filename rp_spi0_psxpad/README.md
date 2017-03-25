@@ -31,6 +31,7 @@ To Do
 ----
 - Get analog value button pressure
 - Rumble motors
+- Pool with DMA
 
 -----
 
