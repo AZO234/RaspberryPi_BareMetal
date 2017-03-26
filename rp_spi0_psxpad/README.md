@@ -1,9 +1,9 @@
-PSX(PS1/PS2) pad for SPI0 sample
-================================
+PSX(Play Station 1/2) pad for SPI0 sample
+=========================================
 
-This is PSX(PS1/PS2) pad for SPI0 sample code.  
+This is PSX(Play Station 1/2) pad for SPI0 sample code.  
 
-PSX(PS1/2) controler pins (not PSX's socket, pad side)  
+PSX controler pins (not PSX's socket, pad side)  
  123 456 789  
 (...|...|...)  
 
