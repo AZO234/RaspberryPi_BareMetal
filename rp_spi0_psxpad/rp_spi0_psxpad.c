@@ -295,7 +295,7 @@ void PSXPads_SetADMode(PSXPads_t* ptPSXPads, const uint8_t u8PadNo, const uint8_
 
 	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ENTER_CFG, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ENTER_CFG));
 	PSXPads_Command(ptPSXPads, u8PadNo, ptPSXPads->ltPad[u8PadNo].lu8ADMode, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_AD_MODE));
-	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ALL_PRESSURE, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ALL_PRESSURE));
+//	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ALL_PRESSURE, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ALL_PRESSURE));
 	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_EXIT_CFG, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_EXIT_CFG));
 }
 
