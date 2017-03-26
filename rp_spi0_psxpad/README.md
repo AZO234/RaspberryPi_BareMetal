@@ -57,5 +57,7 @@ https://github.com/raspberrypi/firmware/tree/master/boot
 
 Reference
 ---------
-- dwelch67/raspberrypi: Raspberry Pi ARM based bare metal examples https://github.com/dwelch67/raspberrypi  
-- Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials http://store.curiousinventor.com/guides/PS2/  
+- dwelch67/raspberrypi: Raspberry Pi ARM based bare metal examples  
+https://github.com/dwelch67/raspberrypi  
+- Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials  
+http://store.curiousinventor.com/guides/PS2/  
