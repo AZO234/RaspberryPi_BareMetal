@@ -211,7 +211,7 @@ void spi0_init(void) {
 	for(ra = 0; ra < 150; ra++) dummy();
 	PUT32(BCM283X_GPIO_GPPUDCLK0, 0);
 
-	/* 250MHz / 2048 = 122kbps */
+	/* 250MHz / 1024 = 244kbps */
 	PUT32(BCM283X_SPI0_CLK, 1024);
 }
 
@@ -249,32 +249,26 @@ void PSXPads_Init(PSXPads_t* ptPSXPads, const uint8_t i_u8PadNum) {
 }
 
 void PSXPads_Command(const PSXPads_t* ptPSXPads, const uint8_t u8PadNo, const uint8_t i_lu8SendCmd[], uint8_t i_lu8Response[], const uint8_t i_u8SendCmdLen) {
-	uint8_t u8Loc, u8RcvLoc = 0;
+	uint8_t u8Loc;
 
 	if(!ptPSXPads)
 		return;
 	if(u8PadNo >= ptPSXPads->u8PadsNum)
 		return;
 
+	/* FIFO clear, mode 3 */
 	PUT32(BCM283X_SPI0_CS, 0x000000BC + u8PadNo);
 	wait_usec(10);
 	for(u8Loc = 0; u8Loc < i_u8SendCmdLen; u8Loc++) {
 		while(!(GET32(BCM283X_SPI0_CS) & (1 << 18)));
 		PUT32(BCM283X_SPI0_FIFO, REVERSE_BIT(i_lu8SendCmd[u8Loc]));
 		while(!(GET32(BCM283X_SPI0_CS) & (1 << 16)));
-		while(GET32(BCM283X_SPI0_CS) & (1 << 17)) {
-			i_lu8Response[u8RcvLoc] = GET32(BCM283X_SPI0_FIFO) & 0xFF;
-			i_lu8Response[u8RcvLoc] = REVERSE_BIT(i_lu8Response[u8RcvLoc]);
-			u8RcvLoc++;
-		}
-	}
-	while((GET32(BCM283X_SPI0_CS) & (1 << 17)) && u8RcvLoc < i_u8SendCmdLen) {
-		i_lu8Response[u8RcvLoc] = GET32(BCM283X_SPI0_FIFO) & 0xFF;
-		i_lu8Response[u8RcvLoc] = REVERSE_BIT(i_lu8Response[u8RcvLoc]);
-		u8RcvLoc++;
+		while(!(GET32(BCM283X_SPI0_CS) & (1 << 17)));
+		i_lu8Response[u8Loc] = GET32(BCM283X_SPI0_FIFO) & 0xFF;
+		i_lu8Response[u8Loc] = REVERSE_BIT(i_lu8Response[u8Loc]);
 	}
 	PUT32(BCM283X_SPI0_CS, 0x00000000);
-	wait_usec(10);
+	wait_usec(100);
 }
 
 void PSXPads_Pool(PSXPads_t* ptPSXPads) {
@@ -301,7 +295,7 @@ void PSXPads_SetADMode(PSXPads_t* ptPSXPads, const uint8_t u8PadNo, const uint8_
 
 	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ENTER_CFG, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ENTER_CFG));
 	PSXPads_Command(ptPSXPads, u8PadNo, ptPSXPads->ltPad[u8PadNo].lu8ADMode, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_AD_MODE));
-//	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ALL_PRESSURE, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ALL_PRESSURE));
+	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ALL_PRESSURE, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ALL_PRESSURE));
 	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_EXIT_CFG, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_EXIT_CFG));
 }
 
