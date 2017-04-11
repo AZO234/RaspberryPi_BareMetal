@@ -69,6 +69,7 @@ typedef struct PSXPad_KeyState {
 	uint8_t u8AR2;
 } PSXPad_KeyState_t;
 
+const uint8_t PSX_CMD_INIT_PRESSURE[]	= {0x01, 0x40, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00};
 const uint8_t PSX_CMD_POLL[]         = {0x01, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 const uint8_t PSX_CMD_ENTER_CFG[]    = {0x01, 0x43, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
 const uint8_t PSX_CMD_EXIT_CFG[]     = {0x01, 0x43, 0x00, 0x00, 0x5A, 0x5A, 0x5A, 0x5A, 0x5A};
@@ -267,8 +268,9 @@ void PSXPads_Command(const PSXPads_t* ptPSXPads, const uint8_t u8PadNo, const ui
 		i_lu8Response[u8Loc] = GET32(BCM283X_SPI0_FIFO) & 0xFF;
 		i_lu8Response[u8Loc] = REVERSE_BIT(i_lu8Response[u8Loc]);
 	}
+	wait_usec(5);
 	PUT32(BCM283X_SPI0_CS, 0x00000000);
-	wait_usec(100);
+	wait_usec(5);
 }
 
 void PSXPads_Pool(PSXPads_t* ptPSXPads) {
@@ -295,6 +297,7 @@ void PSXPads_SetADMode(PSXPads_t* ptPSXPads, const uint8_t u8PadNo, const uint8_
 
 	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ENTER_CFG, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ENTER_CFG));
 	PSXPads_Command(ptPSXPads, u8PadNo, ptPSXPads->ltPad[u8PadNo].lu8ADMode, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_AD_MODE));
+//	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_INIT_PRESSURE, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_INIT_PRESSURE));
 //	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ALL_PRESSURE, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ALL_PRESSURE));
 	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_EXIT_CFG, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_EXIT_CFG));
 }
