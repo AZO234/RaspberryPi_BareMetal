@@ -311,8 +311,8 @@ void PSXPads_SetEnableMotor(PSXPads_t* ptPSXPads, const uint8_t u8PadNo, const u
 	ptPSXPads->ltPad[u8PadNo].bMotor1Enable = i_bMotor1Enable ? 1 : 0;
 	ptPSXPads->ltPad[u8PadNo].bMotor2Enable = i_bMotor2Enable ? 1 : 0;
 
-	ptPSXPads->ltPad[u8PadNo].lu8EnableMotor[3] = ptPSXPads->ltPad[u8PadNo].bMotor1Enable ? 0xFF : 0x00;
-	ptPSXPads->ltPad[u8PadNo].lu8EnableMotor[4] = ptPSXPads->ltPad[u8PadNo].bMotor2Enable ? 0xFF : 0x00;
+	ptPSXPads->ltPad[u8PadNo].lu8EnableMotor[3] = ptPSXPads->ltPad[u8PadNo].bMotor1Enable ? 0x00 : 0xFF;
+	ptPSXPads->ltPad[u8PadNo].lu8EnableMotor[4] = ptPSXPads->ltPad[u8PadNo].bMotor2Enable ? 0x01 : 0xFF;
 
 	PSXPads_Command(ptPSXPads, u8PadNo, PSX_CMD_ENTER_CFG, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ENTER_CFG));
 	PSXPads_Command(ptPSXPads, u8PadNo, ptPSXPads->ltPad[u8PadNo].lu8EnableMotor, ptPSXPads->ltPad[u8PadNo].lu8Response, sizeof(PSX_CMD_ENABLE_MOTOR));
@@ -325,7 +325,7 @@ void PSXPads_SetMotorLevel(PSXPads_t* ptPSXPads, const uint8_t u8PadNo, const ui
 	if(u8PadNo >= ptPSXPads->u8PadsNum)
 		return;
 
- 	ptPSXPads->ltPad[u8PadNo].u8Motor1Level = i_u8Motor1Level;
+ 	ptPSXPads->ltPad[u8PadNo].u8Motor1Level = i_u8Motor1Level ? 0xFF : 0x00;
 	ptPSXPads->ltPad[u8PadNo].u8Motor2Level = i_u8Motor2Level;
 
 	ptPSXPads->ltPad[u8PadNo].lu8PoolCmd[3] = ptPSXPads->ltPad[u8PadNo].u8Motor1Level;
@@ -393,9 +393,6 @@ int notmain(unsigned int earlypc) {
 
 	PSXPads_Init(&tPSXPads, 1);
 	PSXPads_SetADMode(&tPSXPads, 0, 1, 1);	/* Analog mode, Lock */
-
-//	PSXPads_SetMotorLevel(&tPSXPads,0,255,255);
-//	PSXPads_SetEnableMotor(&tPSXPads,0,1,1);
 
 	while(1) {
 		PSXPads_Pool(&tPSXPads);
