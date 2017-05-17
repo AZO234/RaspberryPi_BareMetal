@@ -1,17 +1,10 @@
-UART sample
-===========
+blink with GPIO4 sample
+=======================
 
-This is Auxiliary UART(UART1) sample code.  
-(UART0 is used Bluetooth in RP3)  
-
-This sample use UART 115200/8/N/1.  
-Connect follow pins to PC.  
-* pin 6 GND  
-* Pin 8 TXD(GPIO14/ALT5)  
-* Pin10 RXD(GPIO15/ALT5)  
+This is blink LED with GPIO4 sample code.  
 
 If you can run this program,  
-Host PC key input will callback.  
+blink LED.  
 
 -----
 
