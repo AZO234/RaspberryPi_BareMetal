@@ -1,0 +1,2 @@
+arm_64bit=0
+enable_jtag_gpio=1
