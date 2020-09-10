@@ -57,15 +57,15 @@ reset_single_cn:
 reset_single_c0:
 #endif
 
-#if defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
-	/* non-secure */
+#if defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
+	// non-secure
 	mrc p15, 0, r0, c1, c1, 0
 	orr r0, r0, #0x1
 	mcr p15, 0, r0, c1, c1, 0
 #endif
 
-#ifdef AZO_CHIP_BCM2837
-	/* stop caching */
+#if defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
+	// stop caching
 	mov r12, #0
 	mcr p15, 0, r12, c7, c10, 1
 	dsb
@@ -75,9 +75,9 @@ reset_single_c0:
 	mcr p15, 0, r12, c7, c5, 6
 	dsb
 	isb
-#endif	/* AZO_CHIP_BCM2837 */
+#endif
 
-	/* enable L1 Cache */
+	// enable L1 Cache
 	mrc p15, 0, r0, c1, c0, 0	;@ r0 = System Control Register
 	orr r0, #0x0004			;@ Data Cache (Bit 2)
 	orr r0, #0x0800			;@ Branch Prediction (Bit 11)
@@ -85,7 +85,7 @@ reset_single_c0:
 	mcr p15, 0, r0, c1, c0, 0	;@ System Control Register = R0
 
 #if !defined(AZO_CHIP_BCM2835) && !defined(AZO_CPU_SINGLE)
-	/* core branch */
+	// core branch
 	mrc p15, 0, r0, c0, c0, 5
 	and r0, r0, #0x3
 	cmp r0, #1
@@ -97,7 +97,7 @@ reset_single_c0:
 #endif
 
 #if defined(AZO_CHIP_BCM2835) || defined(AZO_CHIP_HYP)
-	/* copy vector */
+	// copy vector
 	mov r0,#0x8000
 	mov r1,#0x0000
 	ldmia r0!,{r2-r9}
@@ -107,27 +107,27 @@ reset_single_c0:
 #endif
 
 #ifdef AZO_CHIP_HYP
-	mov r1, #0	/* start address */
-	/* Core 1 wakeup (WPI sleeping -> interrupt) */
-	ldr r0, =0x4000009C	/* Core 1 Mailbox 3 write-set */
+	mov r1, #0	// start address
+	// Core 1 wakeup (WPI sleeping -> interrupt)
+	ldr r0, =0x4000009C	// Core 1 Mailbox 3 write-set
 	str r1, [r0]
-	/* Core 2 wakeup (WPI sleeping -> interrupt) */
-	ldr r0, =0x400000AC	/* Core 2 Mailbox 3 write-set */
+	// Core 2 wakeup (WPI sleeping -> interrupt)
+	ldr r0, =0x400000AC	// Core 2 Mailbox 3 write-set
 	str r1, [r0]
-	/* Core 3 wakeup (WPI sleeping -> interrupt) */
-	ldr r0, =0x400000BC	/* Core 3 Mailbox 3 write-set */
+	// Core 3 wakeup (WPI sleeping -> interrupt)
+	ldr r0, =0x400000BC	// Core 3 Mailbox 3 write-set
 	str r1, [r0]
 #endif
 
-	/* set IRQ stack */
+	// set IRQ stack
 	mov r0, #0xD2
 	msr cpsr_c, r0	;@ (PSR_IRQ_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	mov sp, #0x8000
-	/* set FIQ stack */
+	// set FIQ stack
 	mov r0, #0xD1
 	msr cpsr_c, r0	;@ (PSR_FIQ_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	mov sp, #0x4000
-	/* set SVC stack */
+	// set SVC stack
 	mov r0, #0xD3
 	msr cpsr_c, r0	;@ (PSR_SVC_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	ldr r0, =0x8000000
@@ -137,15 +137,15 @@ reset_single_c0:
 hang:	b hang
 
 reset_c1:
-	/* set IRQ stack */
+	// set IRQ stack
 	mov r0, #0xD2
 	msr cpsr_c, r0	;@ (PSR_IRQ_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	mov sp, #0x7000
-	/* set FIQ stack */
+	// set FIQ stack
 	mov r0, #0xD1
 	msr cpsr_c, r0	;@ (PSR_FIQ_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	mov sp, #0x3000
-	/* set SVC stack */
+	// set SVC stack
 	mov r0, #0xD3
 	msr cpsr_c, r0	;@ (PSR_SVC_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	ldr r0, =0x7F80000
@@ -155,15 +155,15 @@ reset_c1:
 	b hang
 
 reset_c2:
-	/* set IRQ stack */
+	// set IRQ stack
 	mov r0, #0xD2
 	msr cpsr_c, r0	;@ (PSR_IRQ_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	mov sp, #0x6000
-	/* set FIQ stack */
+	// set FIQ stack
 	mov r0, #0xD1
 	msr cpsr_c, r0	;@ (PSR_FIQ_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	mov sp, #0x2000
-	/* set SVC stack */
+	// set SVC stack
 	mov r0, #0xD3
 	msr cpsr_c, r0	;@ (PSR_SVC_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	ldr r0, =0x7F00000
@@ -173,15 +173,15 @@ reset_c2:
 	b hang
 
 reset_c3:
-	/* set IRQ stack */
+	// set IRQ stack
 	mov r0, #0xD2
 	msr cpsr_c, r0	;@ (PSR_IRQ_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	mov sp, #0x5000
-	/* set FIQ stack */
+	// set FIQ stack
 	mov r0, #0xD1
 	msr cpsr_c, r0	;@ (PSR_FIQ_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	mov sp, #0x1000
-	/* set SVC stack */
+	// set SVC stack
 	mov r0, #0xD3
 	msr cpsr_c, r0	;@ (PSR_SVC_MODE|PSR_FIQ_DIS|PSR_IRQ_DIS)
 	ldr r0, =0x7E80000
@@ -215,7 +215,7 @@ arm_get_coreid:
 #else
 	mrc p15, 0, r0, c0, c0, 5
 	and r0, #0x3
-#endif	/* AZO_CHIP_BCM2835 */
+#endif	// AZO_CHIP_BCM2835
     bx lr
 
 ;@-------------------------------------------------------------------------
@@ -249,8 +249,13 @@ arm_bp_enable:
 	mrc p15, 0, r0, c1, c0, 0
 	orr r0, r0, #0x800	;@ Z: bp
 	mcr p15, 0, r0, c1, c0, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	isb
 	dsb
+#endif	// AZO_CHIP_BCM2835
 arm_bp_enable_end:
 	bx lr
 
@@ -265,8 +270,13 @@ arm_bp_disable:
 	mrc p15, 0, r0, c1, c0, 0
 	bic r0, r0, #0x800	;@ Z: bp
 	mcr p15, 0, r0, c1, c0, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	isb
 	dsb
+#endif	// AZO_CHIP_BCM2835
 arm_bp_disable_end:
 	bx lr
 
@@ -281,7 +291,11 @@ arm_icache_enable:
 	mrc p15, 0, r0, c1, c0, 0
 	orr r0, r0, #0x1000	;@ I: instruction
 	mcr p15, 0, r0, c1, c0, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	isb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -295,7 +309,11 @@ arm_icache_disable:
 	mrc p15, 0, r0, c1, c0, 0
 	bic r0, r0, #0x1000	;@ I: instruction
 	mcr p15, 0, r0, c1, c0, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	isb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -309,7 +327,11 @@ arm_dcache_enable:
 	mrc p15, 0, r0, c1, c0, 0
 	orr r0, r0, #0x4	;@ C: data
 	mcr p15, 0, r0, c1, c0, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	dsb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -323,7 +345,11 @@ arm_dcache_disable:
 	mrc p15, 0, r0, c1, c0, 0
 	bic r0, r0, #0x4	;@ C: data
 	mcr p15, 0, r0, c1, c0, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	dsb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -332,16 +358,27 @@ arm_dcache_disable:
 	.globl arm_acquire_lock
 arm_acquire_lock:
 	mov r1, #1
+#ifdef AZO_CHIP_BCM2835
+	mov r0, #0
+	mcr p15, 0, r0, c7, c10, 5
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	dmb
 	dsb
+#endif	// AZO_CHIP_BCM2835
 	ldrex r2, [r0]		;@ set exclusive tag
 	cmp r2, #0
 	bne arm_acquire_lock
 	strex r2, r1, [r0]	;@ get exclusive access
 	cmp r2, #0
 	bne arm_acquire_lock
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c10, 5
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	dmb
 	dsb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -351,8 +388,13 @@ arm_acquire_lock:
 arm_release_lock:
 	mov r1, #0
 	str r1, [r0]
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c10, 5
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	dmb
 	dsb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -385,7 +427,11 @@ arm_icache_invalidate:
 	beq arm_icache_invalidate_end
 	mov r0, #0
 	mcr p15, 0, r0, c7, c5, 0	;@ invalidate instruction caches
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	isb
+#endif	// AZO_CHIP_BCM2835
 arm_icache_invalidate_end:
 	bx lr
 
@@ -399,7 +445,11 @@ arm_dcache_invalidate:
 	beq arm_dcache_invalidate_end
 	mov r0, #0
 	mcr p15, 0, r0, c7, c6, 0	;@ invalidate data caches
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	dsb
+#endif	// AZO_CHIP_BCM2835
 arm_dcache_invalidate_end:
 	bx lr
 
@@ -413,8 +463,13 @@ arm_dcache_clean:
 	beq arm_dcache_clean_end
 	mov r0, #0
 	mcr p15, 0, r0, c7, c10, 0	;@ clean data caches
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c10, 4
+	mcr p15, 0, r0, c7, c10, 5
+#else
 	dsb
 	dmb
+#endif	// AZO_CHIP_BCM2835
 arm_dcache_clean_end:
 	bx lr
 
@@ -428,8 +483,13 @@ arm_dcache_clean_invalidate:
 	beq arm_dcache_clean_invalidate_end
 	mov r0, #0
 	mcr p15, 0, r0, c7, c14, 0	;@ clean and invalidate data caches
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c10, 4
+	mcr p15, 0, r0, c7, c10, 5
+#else
 	dsb
 	dmb
+#endif	// AZO_CHIP_BCM2835
 arm_dcache_clean_invalidate_end:
 	bx lr
 
@@ -443,8 +503,13 @@ arm_cache_invalidate:
 	beq arm_cache_invalidate_end
 	mov r0, #0
 	mcr p15, 0, r0, c7, c7, 0	;@ invalidate unified caches
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c10, 4
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	dsb
 	isb
+#endif	// AZO_CHIP_BCM2835
 arm_cache_invalidate_end:
 	bx lr
 
@@ -458,8 +523,13 @@ arm_bp_invalidate:
 	beq arm_bp_invalidate_end
 	mov r0, #0
 	mcr p15, 0, r0, c7, c5, 6	;@ invalidate branch prediction
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+	mcr p15, 0, r0, c7, c10, 4
+#else
 	isb
 	dsb
+#endif	// AZO_CHIP_BCM2835
 arm_bp_invalidate_end:
 	bx lr
 
@@ -470,7 +540,12 @@ arm_bp_invalidate_end:
 arm_tlb_invalidate:
 	mov r0, #0
 	mcr p15, 0, r0, c8, c7, 0	;@ invalidate tlb
+#ifdef AZO_CHIP_BCM2835
+	mov r0, #0
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	isb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -481,7 +556,11 @@ arm_alignment_enable:
 	mrc p15, 0, r0, c8, c7, 0	;@ SCTLR
 	orr r0, #0x2
 	mcr p15, 0, r0, c8, c7, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	isb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -492,7 +571,11 @@ arm_alignment_disable:
 	mrc p15, 0, r0, c8, c7, 0	;@ SCTLR
 	bic r0, #0x2
 	mcr p15, 0, r0, c8, c7, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	isb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -507,9 +590,15 @@ arm_mmu_reset:
 	pop {lr}
 	ldr r0, =0x00C50878
 	mcr p15, 0, r0, c8, c7, 0
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+	mcr p15, 0, r0, c7, c10, 4
+	mcr p15, 0, r0, c7, c10, 5
+#else
 	isb
 	dsb
 	dmb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -534,7 +623,11 @@ arm_mmu_init:
 	orr r0, r0, #0x4A
 	mcr p15, 0, r0, c2, c0, 0	;@ set TTBR0 (page table walk inner and outer write-back,
 					;@ write-allocate, cacheable, shareable memory)
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	isb
+#endif	// AZO_CHIP_BCM2835
 	mrc p15, 0, r0, c1, c0, 0	;@ enable MMU in SCTLR
 	ldr r1, =0x73027807
 	and r0, r0, r1
@@ -548,9 +641,15 @@ arm_mmu_init:
 ;@ void arm_data_memorybarrier(void);
 	.globl arm_data_memorybarrier
 arm_data_memorybarrier:
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+	mcr p15, 0, r0, c7, c10, 4
+	mcr p15, 0, r0, c7, c10, 5
+#else
 	isb
 	dsb
 	dmb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -558,7 +657,11 @@ arm_data_memorybarrier:
 ;@ void arm_instruction_syncbarrier(void);
 	.globl arm_instruction_syncbarrier
 arm_instruction_syncbarrier:
+#ifdef AZO_CHIP_BCM2835
+	mcr p15, 0, r0, c7, c9, 4
+#else
 	isb
+#endif	// AZO_CHIP_BCM2835
 	bx lr
 
 ;@-------------------------------------------------------------------------
@@ -676,7 +779,7 @@ azo_memcpy_a4_1:
 	cmp r2, #0xB0
 #else
 	cmp r2, #0x30
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	blo azo_memcpy_a4_3
 	push {r4-r11, lr}
 	add r3, r0, r2
@@ -700,7 +803,7 @@ azo_memcpy_a4_1:
 	vpush {d8-d15}
 #else
 	sub r2, r3, #0x30
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	str sp, [r12]
 azo_memcpy_a4_2:
 	ldmia r1!, {r3-r14}
@@ -708,7 +811,7 @@ azo_memcpy_a4_2:
 #ifdef AZO_MEM_VFP
 	vldmia r1!, {d0-d15}
 	vstmia r0!, {d0-d15}
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	cmp r1, r2
 	blo azo_memcpy_a4_2
 	ldr r12, =azo_memcpy_sp
@@ -724,7 +827,7 @@ azo_memcpy_a4_2:
 	vmsr fpexc, r4
 	bic r3, r3, #0x40000000
 	mcr p15, 0, r3, c1, c0, 2
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	pop {r4-r11, lr}
 azo_memcpy_a4_3:
 	ldr r3, [r1], #4
@@ -766,7 +869,7 @@ azo_memset_2:
 	cmp r2, #0xB4
 #else
 	cmp r2, #0x34
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	blo azo_memset_4
 	push {r4-r11, lr}
 	add r3, r0, r2
@@ -790,7 +893,7 @@ azo_memset_2:
 	vpush {d8-d15}
 #else
 	sub r2, r3, #0x34
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	str sp, [r12]
 	mov r3, r1
 	mov r4, r1
@@ -821,12 +924,12 @@ azo_memset_2:
 	vmov.f64 d13, d5
 	vmov.f64 d14, d6
 	vmov.f64 d15, d7
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 azo_memset_3:
 	stmia r0!, {r1, r3-r14}
 #ifdef AZO_MEM_VFP
 	vstmia r0!, {d0-d15}
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	cmp r0, r2
 	blo azo_memset_3
 	cmp r0, r2
@@ -834,7 +937,7 @@ azo_memset_3:
 	stmia r0!, {r1, r3-r14}
 #ifdef AZO_MEM_VFP
 	vstmia r0!, {d0-d15}
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 azo_memset_4:
 	ldr r12, =azo_memset_sp
 	mrc p15, 0, r3, c0, c0, 5
@@ -849,13 +952,13 @@ azo_memset_4:
 	vmsr fpexc, r4
 	bic r3, r3, #0x40000000
 	mcr p15, 0, r3, c1, c0, 2
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	pop {r4-r11, lr}
 #ifdef AZO_MEM_VFP
 	add r2, r2, #0xB4
 #else
 	add r2, r2, #0x34
-#endif	/* AZO_MEM_VFP */
+#endif	// AZO_MEM_VFP
 	cmp r0, r2
 	bhs azo_memset_5
 	sub r3, r2, r0
@@ -883,9 +986,9 @@ azo_memset_sp:
 ;@-------------------------------------------------------------------------
 .text
 ;@ get cpuclock
-;@ uint32_t bcm283x_get_cpuclock(void);
-	.globl bcm283x_get_cpuclock
-bcm283x_get_cpuclock:
+;@ uint32_t rp_get_cpuclock(void);
+	.globl rp_get_cpuclock
+rp_get_cpuclock:
 	push {r4-r11, lr}
 	mrs r8, cpsr
 	mov r1, r8
@@ -893,28 +996,28 @@ bcm283x_get_cpuclock:
 	msr cpsr_c, r1			;@ lock
 	mrc p15, 0, r12, c15, c12, 0	;@ performance monitor control
 	tst r12, #1
-	bne bcm283x_get_cpuclock_1
+	bne rp_get_cpuclock_1
 	mov r0, #1
 	mcr p15, 0, r0, c15, c12, 0	;@ performance monitor counter enable
-bcm283x_get_cpuclock_1:
-	ldr r11, =BCM283X_STIMER_CS	;@ system timer(1us)
+rp_get_cpuclock_1:
+	ldr r11, =RP_STIMER_CS	;@ system timer(1us)
 	ldr r10, [r11]
 	tst r10, #2
-	bne bcm283x_get_cpuclock_2
+	bne rp_get_cpuclock_2
 	mov r0, #2
 	str r0, [r11]			;@ system timer enable
-bcm283x_get_cpuclock_2:
-	ldr r9, =BCM283X_STIMER_CLO	;@ system timer counter
+rp_get_cpuclock_2:
+	ldr r9, =RP_STIMER_CLO	;@ system timer counter
 	ldr r0, [r9]
-bcm283x_get_cpuclock_3:
+rp_get_cpuclock_3:
 	ldr r1, [r9]
 	cmp r0, r1
-	beq bcm283x_get_cpuclock_3	;@ wait for start
+	beq rp_get_cpuclock_3	;@ wait for start
 	mrc p15, 0, r2, c15, c12, 1	;@ start value
-bcm283x_get_cpuclock_4:
+rp_get_cpuclock_4:
 	ldr r0, [r9]
 	cmp r0, r1
-	beq bcm283x_get_cpuclock_4	;@ wait for end
+	beq rp_get_cpuclock_4	;@ wait for end
 	mrc p15, 0, r3, c15, c12, 1	;@ end value
 	mov r0, #0
 	tst r10, #2
@@ -997,7 +1100,7 @@ azo_uint32_mod:
 ;@-------------------------------------------------------------------------
 #if defined(AZO_CHIP_BCM2835)
 #define BCM_CLOCK 700
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 #define BCM_CLOCK 600
 #endif
 
@@ -1005,9 +1108,9 @@ azo_uint32_mod:
 ;@ nanosec wait
 ;@ just this function call, 1us + a little more.
 ;@ granularity is about 4count at 700MHz = about 2.8ns.
-;@ void bcm283x_wait_nsec(uint32_t nsec);
-	.globl bcm283x_wait_nsec
-bcm283x_wait_nsec:
+;@ void rp_wait_nsec(uint32_t nsec);
+	.globl rp_wait_nsec
+rp_wait_nsec:
 	cmp r0, #0
 	bxeq lr
 	push {r4-r11, lr}
@@ -1017,21 +1120,21 @@ bcm283x_wait_nsec:
 	msr cpsr_c, r1			;@ lock
 #if defined(AZO_CHIP_BCM2835)
 	mrc p15, 0, r12, c15, c12, 0
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r12, c9, c12, 0
 #endif
 	tst r12, #1
-	bne bcm283x_wait_nsec_1
+	bne rp_wait_nsec_1
 	mov r1, #1
 #if defined(AZO_CHIP_BCM2835)
 	mcr p15, 0, r1, c15, c12, 0	;@ performance monitor counter enable
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mcr p15, 0, r1, c9, c12, 0	;@ performance monitor counter enable
 #endif
-bcm283x_wait_nsec_1:
+rp_wait_nsec_1:
 #if defined(AZO_CHIP_BCM2835)
 	mrc p15, 0, r2, c15, c12, 1	;@ init start value
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r2, c9, c13, 0	;@ init start value
 #endif
 	ldr r1, =BCM_CLOCK
@@ -1040,43 +1143,43 @@ bcm283x_wait_nsec_1:
 	bl azo_uint32_div
 #if defined(AZO_CHIP_BCM2835)
 	mrc p15, 0, r3, c15, c12, 1	;@ init end value
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r3, c9, c13, 0	;@ init end value
 #endif
 	sub r2, r3, r2
 	tst r12, #8
 	lslne r0, r0, #6		;@ x64
 	cmp r0, r2			;@ wait end value
-	blo bcm283x_wait_nsec_4		;@ init time >= wait end : finish
-bcm283x_wait_nsec_2:
+	blo rp_wait_nsec_4		;@ init time >= wait end : finish
+rp_wait_nsec_2:
 #if defined(AZO_CHIP_BCM2835)
 	mrc p15, 0, r1, c15, c12, 1	;@ wait start value
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r1, c9, c13, 0	;@ wait start value
 #endif
 	mvn r2, r1
 	add r2, r2, #1			;@ wait start complement
-bcm283x_wait_nsec_3:
+rp_wait_nsec_3:
 #if defined(AZO_CHIP_BCM2835)
 	mrc p15, 0, r1, c15, c12, 1	;@ current value
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r1, c9, c13, 0	;@ current value
 #endif
 	tst r12, #8
 	lslne r1, r1, #6		;@ x64
 	add r1, r1, r2
 	cmp r1, r0
-	blo bcm283x_wait_nsec_3
-bcm283x_wait_nsec_4:
+	blo rp_wait_nsec_3
+rp_wait_nsec_4:
 	tst r12, #1
-	bne bcm283x_wait_nsec_5
+	bne rp_wait_nsec_5
 	mov r1, #0
 #if defined(AZO_CHIP_BCM2835)
 	mcr p15, 0, r1, c15, c12, 0	;@ performance monitor counter disable
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mcr p15, 0, r1, c9, c12, 0	;@ performance monitor counter disable
 #endif
-bcm283x_wait_nsec_5:
+rp_wait_nsec_5:
 	mov r0, #0xFF
 	and r0, r0, r11
 	msr cpsr_c, r0			;@ unlock
@@ -1087,9 +1190,9 @@ bcm283x_wait_nsec_5:
 .text
 ;@ get cpuclock(median)
 ;@ sample count is than 3, chop min/max. (anti-hysteresis)
-;@ uint32_t bcm283x_get_cpuclock_med(uint32_t count);
-	.globl bcm283x_get_cpuclock_med
-bcm283x_get_cpuclock_med:
+;@ uint32_t rp_get_cpuclock_med(uint32_t count);
+	.globl rp_get_cpuclock_med
+rp_get_cpuclock_med:
 	cmp r0, #0
 	moveq r0, #5
 	mov r1, r0
@@ -1098,76 +1201,76 @@ bcm283x_get_cpuclock_med:
 	mov r2, r11
 	bic r2, r2, #0xC
 	msr cpsr_c, r2			;@ lock
-#if defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#if defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r6, c9, c12, 1	;@ Performance Monitors Count Enable Set register
 	tst r6, #0x80000000
-	bne bcm283x_get_cpuclock_med_1
+	bne rp_get_cpuclock_med_1
 	mov r2, r6
 	orr r2, r2, #0x80000000
 	mcr p15, 0, r2, c9, c12, 1	;@ Cycle counter enabled
 #endif
 
-bcm283x_get_cpuclock_med_1:
+rp_get_cpuclock_med_1:
 
 #if defined(AZO_CHIP_BCM2835)
 	mrc p15, 0, r10, c15, c12, 0	;@ performance monitor control
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r10, c9, c12, 0	;@ Performance Monitors Control Register
 #endif
 	tst r10, #1
-	bne bcm283x_get_cpuclock_med_2
+	bne rp_get_cpuclock_med_2
 	mov r2, #1
 #if defined(AZO_CHIP_BCM2835)
 	mcr p15, 0, r2, c15, c12, 0	;@ performance monitor counter enable
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mcr p15, 0, r2, c9, c12, 0	;@ performance monitor counter enable
 #endif
-bcm283x_get_cpuclock_med_2:
-	ldr r9, =BCM283X_STIMER_CS
+rp_get_cpuclock_med_2:
+	ldr r9, =RP_STIMER_CS
 	ldr r8, [r9]
 	tst r8, #2
-	bne bcm283x_get_cpuclock_med_3
+	bne rp_get_cpuclock_med_3
 	mov r2, #2
 	str r2, [r9]			;@ system timer enable
-bcm283x_get_cpuclock_med_3:
-	ldr r7, =BCM283X_STIMER_CLO
+rp_get_cpuclock_med_3:
+	ldr r7, =RP_STIMER_CLO
 	ldr r2, [r7]
-bcm283x_get_cpuclock_med_4:
+rp_get_cpuclock_med_4:
 	ldr r3, [r7]
 	cmp r2, r3
-	beq bcm283x_get_cpuclock_med_4	;@ wait for start
+	beq rp_get_cpuclock_med_4	;@ wait for start
 #if defined(AZO_CHIP_BCM2835)
 	mrc p15, 0, r4, c15, c12, 1	;@ start value
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r4, c9, c13, 0	;@ start value
 #endif
 	mov r2, r3
-bcm283x_get_cpuclock_med_5:
+rp_get_cpuclock_med_5:
 	ldr r3, [r7]
 	cmp r2, r3
-	beq bcm283x_get_cpuclock_med_5	;@ wait for end
+	beq rp_get_cpuclock_med_5	;@ wait for end
 #if defined(AZO_CHIP_BCM2835)
 	mrc p15, 0, r5, c15, c12, 1	;@ end(next start) value
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mrc p15, 0, r5, c9, c13, 0	;@ end(next start) value
 #endif
-bcm283x_get_cpuclock_med_6:
+rp_get_cpuclock_med_6:
 	mov r2, r3
 	sub r4, r5, r4
 	push {r4}
 	mov r4, r5
 	subs r0, r0, #1
-	bne bcm283x_get_cpuclock_med_5
+	bne rp_get_cpuclock_med_5
 	pop {r0}
 	cmp r1, #1
-	beq bcm283x_get_cpuclock_med_9
+	beq rp_get_cpuclock_med_9
 	pop {r2}
 	cmp r1, #2
-	bne bcm283x_get_cpuclock_med_7
+	bne rp_get_cpuclock_med_7
 	add r0, r0, r2
 	lsr r0, r0, #1
-	b bcm283x_get_cpuclock_med_9
-bcm283x_get_cpuclock_med_7:
+	b rp_get_cpuclock_med_9
+rp_get_cpuclock_med_7:
 	cmp r0, r2
 	movlo r3, r0
 	movlo r4, r2
@@ -1175,7 +1278,7 @@ bcm283x_get_cpuclock_med_7:
 	movhs r4, r0
 	add r0, r0, r2
 	mov r5, #2
-bcm283x_get_cpuclock_med_8:
+rp_get_cpuclock_med_8:
 	pop {r2}
 	add r0, r0, r2
 	cmp r2, r3
@@ -1184,35 +1287,35 @@ bcm283x_get_cpuclock_med_8:
 	movhs r4, r2
 	add r5, r5, #1
 	cmp r1, r5
-	bne bcm283x_get_cpuclock_med_8
+	bne rp_get_cpuclock_med_8
 	sub r0, r0, r3
 	sub r0, r0, r4
 	cmp r1, #3
-	beq bcm283x_get_cpuclock_med_9
+	beq rp_get_cpuclock_med_9
 	sub r1, r1, #2
 	bl azo_uint32_div
-bcm283x_get_cpuclock_med_9:
+rp_get_cpuclock_med_9:
 	tst r8, #2
-	bne bcm283x_get_cpuclock_med_10
+	bne rp_get_cpuclock_med_10
 	mov r1, #0
 	str r1, [r9]			;@ system timer disable
-bcm283x_get_cpuclock_med_10:
+rp_get_cpuclock_med_10:
 	tst r10, #1
-	bne bcm283x_get_cpuclock_med_11
+	bne rp_get_cpuclock_med_11
 	mov r1, #0
 #if defined(AZO_CHIP_BCM2835)
 	mcr p15, 0, r1, c15, c12, 0	;@ performance monitor counter disable
-#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+#elif defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mcr p15, 0, r1, c9, c12, 0	;@ performance monitor counter disable
 #endif
-bcm283x_get_cpuclock_med_11:
+rp_get_cpuclock_med_11:
 	tst r6, #0x80000000
-	bne bcm283x_get_cpuclock_med_12
-#if defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837)
+	bne rp_get_cpuclock_med_12
+#if defined(AZO_CHIP_BCM2836) || defined(AZO_CHIP_BCM2837) || defined(AZO_CHIP_BCM2711)
 	mov r6, #0x80000000
 	mcr p15, 0, r6, c9, c12, 2	;@ Performance Monitors Count Enable Clear
 #endif
-bcm283x_get_cpuclock_med_12:
+rp_get_cpuclock_med_12:
 	and r1, r11, #0xFF
 	msr cpsr_c, r1			;@ unlock
 	tst r10, #8

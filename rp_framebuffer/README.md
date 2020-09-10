@@ -1,6 +1,10 @@
 Frame Buffer sample
 ===================
 
+*** temporary(2020/09/10) ***
+Now tuning to new compiler and rpi4!
+This code work on RPi1/3 only.
+
 This is Frame Buffer sample code.  
 
 Connect HDMI to 1080p/24bit color display.
