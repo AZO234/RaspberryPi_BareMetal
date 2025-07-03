@@ -1,6 +1,9 @@
 Raspberry Pi Zero/1/2/3 Bare Metal sample by AZO
 ================================================
 
+[![BuyMeACoffee](https://img.shields.io/badge/-Buy%20Me%20a%20Coffee-ffdd00?style=flat-square&logo=buymeacoffee&logoColor=black)](https://coff.ee/azo234)
+[![](https://img.shields.io/static/v1?label=Sponsor&message=❤️&logo=github-sponsors&color=lightgrey&style=for-the-badge)](https://github.com/sponsors/azo234)
+
 For Raspberry Pi Zero/1/2/3 Bare Metal code by AZO(Tomohiro Yoshidomi).  
 Twitter:@AZO234 E-Mail:typesylph@gmail.com  
 http://domisan.sakura.ne.jp  
